@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('team_id');
-            $table->foreignId('user_id');
+        Schema::create('team_subscriber_tag', function (Blueprint $table) {
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('subscriber_tag_id')->constrained('subscriber_tags')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_users');
+        Schema::dropIfExists('team_subscribertag');
     }
 };

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_subscribertag', function (Blueprint $table) {
+        Schema::create('team_email_service', function (Blueprint $table) {
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
-            $table->foreignId('subscribertag_id')->constrained('subscribertags')->onDelete('cascade');
+            $table->foreignId('email_service_id')->constrained('email_services')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_subscribertag');
+        Schema::dropIfExists('team_emailservice');
     }
 };

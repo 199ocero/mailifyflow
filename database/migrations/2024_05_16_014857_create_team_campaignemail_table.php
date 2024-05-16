@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_campaignemail', function (Blueprint $table) {
+        Schema::create('team_campaign_email', function (Blueprint $table) {
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
-            $table->foreignId('campaignemail_id')->constrained('campaignemails')->onDelete('cascade');
+            $table->foreignId('campaign_email_id')->constrained('campaign_emails')->onDelete('cascade');
             $table->timestamps();
         });
     }

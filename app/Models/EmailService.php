@@ -20,7 +20,7 @@ class EmailService extends Model
 
     public function emailServiceType(): BelongsTo
     {
-        return $this->belongsTo(EmailServiceType::class, 'emailservicetype_id');
+        return $this->belongsTo(EmailServiceType::class, 'email_service_type_id');
     }
 
     public function team(): BelongsTo
