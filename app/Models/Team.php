@@ -12,11 +12,11 @@ class Team extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'name', 'slug', 'timezone',
+        'user_id', 'name', 'slug', 'timezone', 'is_default',
     ];
 
     protected $casts = [
-
+        'is_default' => 'boolean',
     ];
 
     public function campaigns(): BelongsToMany

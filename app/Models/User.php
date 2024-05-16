@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\HasTenants;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasTenants, MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -17,6 +21,29 @@ class User extends Authenticatable implements FilamentUser
     {
         // You may optionally implement your own logic here when a user has access to this panel.
         return $this->email === '199ocero@gmail.com';
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->teams->contains($tenant);
+    }
+
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->teams->sort(function ($teamA, $teamB) {
+            if ($teamA->is_default) {
+                return -1; // $teamA comes before $teamB
+            } elseif ($teamB->is_default) {
+                return 1; // $teamB comes before $teamA
+            }
+
+            return 0; // No change in order
+        });
+    }
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class);
     }
 
     /**
