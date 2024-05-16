@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "abdelhamiderrahmouni/filament-monaco-editor": "dev-main",
+        "abdelhamiderrahmouni/filament-monaco-editor": "^0.2.5",
         "barryvdh/laravel-debugbar": "^3.13",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
@@ -66,11 +66,5 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-          "type": "path",
-          "url": "packages/filament-monaco-editor"
-        }
-    ]
+    "prefer-stable": true
 }

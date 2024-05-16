@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3764f007ef5431a1c1687045e0194f67",
+    "content-hash": "b226de117c36b35ef08bea49a94b19a6",
     "packages": [
         {
             "name": "abdelhamiderrahmouni/filament-monaco-editor",
-            "version": "dev-main",
+            "version": "v0.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor.git",
+                "reference": "19ee073a593fe02865d8cfcad18db996f21b5fc5"
+            },
             "dist": {
-                "type": "path",
-                "url": "packages/filament-monaco-editor",
-                "reference": "9edb247ea44e0ab9123372bd497c7d184ccadbda"
+                "type": "zip",
+                "url": "https://api.github.com/repos/abdelhamiderrahmouni/filament-monaco-editor/zipball/19ee073a593fe02865d8cfcad18db996f21b5fc5",
+                "reference": "19ee073a593fe02865d8cfcad18db996f21b5fc5",
+                "shasum": ""
             },
             "require": {
                 "filament/forms": "^3.0",
@@ -48,28 +54,7 @@
                     "AbdelhamidErrahmouni\\FilamentMonacoEditor\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "AbdelhamidErrahmouni\\FilamentMonacoEditor\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@php ./vendor/bin/testbench package:discover --ansi"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse"
-                ],
-                "test": [
-                    "vendor/bin/pest"
-                ],
-                "test-coverage": [
-                    "vendor/bin/pest --coverage"
-                ],
-                "format": [
-                    "vendor/bin/pint"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -84,12 +69,12 @@
             "homepage": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor",
             "keywords": [
                 "Abdelhamid Errahmouni",
+                "Monaco",
                 "code editor",
                 "filament monaco code editor",
                 "filament monaco editor",
                 "filamentphp",
                 "laravel",
-                "monaco",
                 "monaco editor",
                 "php"
             ],
@@ -97,9 +82,13 @@
                 "issues": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor/issues",
                 "source": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor"
             },
-            "transport-options": {
-                "relative": true
-            }
+            "funding": [
+                {
+                    "url": "https://github.com/AbdelhamidErrahmouni",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-05-16T10:37:32+00:00"
         },
         {
             "name": "anourvalar/eloquent-serialize",
