@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\CampaignStatus;
-use App\Models\EmailServiceType;
+use App\Models\EmailProviderType;
 use App\Models\UnsubscribeEventType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
             CampaignStatus::factory()->create(['name' => $campaignStatus]);
         }
 
-        $emailServiceTypes = ['SMTP']; // add more in the future
+        $emailProviderTypes = ['SMTP']; // add more in the future
 
-        foreach ($emailServiceTypes as $emailServiceType) {
-            EmailServiceType::factory()->create(['name' => $emailServiceType]);
+        foreach ($emailProviderTypes as $emailProviderType) {
+            EmailProviderType::factory()->create(['name' => $emailProviderType]);
         }
 
         $unsubscribeEventTypes = ['Bounce', 'Complaint', 'Manual by Admin', 'Manual by Subscriber'];

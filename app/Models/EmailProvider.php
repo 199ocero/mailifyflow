@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class EmailService extends Model
+class EmailProvider extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'team_id', 'name', 'email_service_type_id',
+        'team_id', 'name', 'email_provider_type_id',
     ];
 
     protected $casts = [
 
     ];
 
-    public function emailServiceType(): BelongsTo
+    public function emailProviderType(): BelongsTo
     {
-        return $this->belongsTo(EmailServiceType::class, 'email_service_type_id');
+        return $this->belongsTo(EmailProviderType::class, 'email_provider_type_id');
     }
 
     public function team(): BelongsTo

@@ -2,17 +2,17 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\EmailServiceTypeResource\Pages;
-use App\Models\EmailServiceType;
+use App\Filament\Admin\Resources\EmailServiceResource\Pages;
+use App\Models\EmailProvider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class EmailServiceTypeResource extends Resource
+class EmailProviderResource extends Resource
 {
-    protected static ?string $model = EmailServiceType::class;
+    protected static ?string $model = EmailProvider::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -20,7 +20,9 @@ class EmailServiceTypeResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('team_id')->nullable()->relationship('team', 'name'),
                 Forms\Components\TextInput::make('name'),
+                Forms\Components\Select::make('email_provider_type_id')->nullable()->relationship('emailProviderType', 'name'),
             ]);
     }
 
@@ -29,6 +31,7 @@ class EmailServiceTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
+
             ])
             ->filters([
 
@@ -46,9 +49,9 @@ class EmailServiceTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmailServiceTypes::route('/'),
-            'create' => Pages\CreateEmailServiceType::route('/create'),
-            'edit' => Pages\EditEmailServiceType::route('/{record}/edit'),
+            'index' => Pages\ListEmailProviders::route('/'),
+            'create' => Pages\CreateEmailProvider::route('/create'),
+            'edit' => Pages\EditEmailProvider::route('/{record}/edit'),
         ];
     }
 }

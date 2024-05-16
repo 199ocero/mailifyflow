@@ -2,13 +2,13 @@
 
 namespace App\Filament\Admin\Resources\EmailServiceResource\Pages;
 
-use App\Filament\Admin\Resources\EmailServiceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Admin\Resources\EmailProviderResource;
 
-class ListEmailServices extends ListRecords
+class ListEmailProviders extends ListRecords
 {
-    protected static string $resource = EmailServiceResource::class;
+    protected static string $resource = EmailProviderResource::class;
 
     protected function getHeaderActions(): array
     {

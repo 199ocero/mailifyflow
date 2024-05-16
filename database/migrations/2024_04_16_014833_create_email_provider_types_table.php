@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('email_service_types', function (Blueprint $table) {
+        Schema::create('email_provider_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('email_service_types');
+        Schema::dropIfExists('email_provider_types');
     }
 };

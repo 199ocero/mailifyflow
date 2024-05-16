@@ -2,12 +2,12 @@
 
 namespace App\Filament\Admin\Resources\EmailServiceResource\Pages;
 
-use App\Filament\Admin\Resources\EmailServiceResource;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Admin\Resources\EmailProviderResource;
 
-class EditEmailService extends EditRecord
+class EditEmailProvider extends EditRecord
 {
-    protected static string $resource = EmailServiceResource::class;
+    protected static string $resource = EmailProviderResource::class;
 
     protected function getHeaderActions(): array
     {

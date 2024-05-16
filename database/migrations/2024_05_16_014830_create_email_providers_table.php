@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('email_services', function (Blueprint $table) {
+        Schema::create('email_providers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
             $table->longText('config');
-            $table->foreignId('email_service_type_id')->constrained('email_service_types')->onDelete('cascade');
+            $table->foreignId('email_provider_type_id')->constrained('email_provider_types')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('email_services');
+        Schema::dropIfExists('email_providers');
     }
 };
