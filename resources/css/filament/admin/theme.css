@@ -1,3 +1,78 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 
 @config 'tailwind.config.js';
+
+/* monaco code editor */
+@layer components {
+    .fme-wrapper{
+        @apply flex flex-col w-full;
+        border: transparent !important;
+    }
+
+    .fme-full-screen{
+        @apply fixed w-screen px-2 h-screen top-0 left-0 bg-white dark:bg-gray-900 overflow-hidden z-[9999];
+    }
+
+    .fme-control-section{
+        @apply flex justify-between bg-white dark:bg-gray-900;
+        padding: 0 !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+
+    .fme-code-preview-tab-item{
+        @apply relative z-20 inline-flex items-center justify-center h-8 px-3 text-sm font-medium text-gray-800 transition-all rounded-md cursor-pointer dark:text-white whitespace-nowrap;
+    }
+
+    .fme-code-preview-tab-marker-container{
+        @apply absolute left-0 z-10 w-1/2 h-full duration-300 ease-out;
+    }
+
+    .fme-code-preview-tab-marker{
+        @apply w-full h-full bg-white rounded-md shadow-sm dark:bg-gray-700;
+    }
+
+    .fme-full-screen-btn{
+        @apply p-2 py-1 rounded focus:ring-0 focus:bg-gray-100 dark:focus:bg-gray-800;
+    }
+
+    .fme-full-screen-btn-icon{
+        @apply w-4 h-4 text-gray-500;
+    }
+
+    .fme-code-preview-tab{
+        @apply relative inline-grid items-center justify-center w-auto h-10 grid-cols-2 p-1 text-gray-500 bg-gray-100 rounded-lg select-none dark:bg-gray-800;
+    }
+
+    .fme-container{
+        @apply rounded-lg flex flex-col items-center relative justify-start w-full h-full bg-[#0C1021] min-h-[250px] pt-3;
+    }
+
+    .fme-loader{
+        @apply absolute inset-0 z-20 flex items-center justify-center w-full h-full duration-1000 ease-out;
+    }
+
+    .fme-loader-icon{
+        @apply w-4 h-4 text-gray-400 animate-spin;
+    }
+
+    .fme-element-wrapper{
+        @apply relative z-10 w-full h-full rounded;
+    }
+
+    .fme-element{
+        @apply w-full h-full text-lg max-h-[90vh] min-h-[80vh];
+    }
+
+    .fme-placeholder{
+        @apply w-full text-sm font-mono absolute z-50 text-gray-500 ml-14 -translate-x-0.5 mt-0.5 left-0 top-0;
+    }
+
+    .fme-preview-wrapper{
+        @apply w-full h-full overflow-hidden border rounded-lg bg-gray-50;
+    }
+
+    .fme-preview{
+        @apply w-full h-full flex max-h-[90vh] min-h-[80vh];
+    }
+}

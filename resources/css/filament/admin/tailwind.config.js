@@ -6,6 +6,6 @@ export default {
         './app/Filament/Admin/**/*.php',
         './resources/views/filament/admin/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
-        './packages/filament-monaco-editor/resources/views/**/*.blade.php'
+        './vendor/abdelhamiderrahmouni/filament-monaco-editor/resources/views/**/*.blade.php',
     ],
 }
