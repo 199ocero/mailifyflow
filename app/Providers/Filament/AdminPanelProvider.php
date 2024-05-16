@@ -30,9 +30,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->tenant(\App\Models\Team::class)
+            ->tenant(\App\Models\Team::class, 'slug')
             ->tenantRegistration(RegisterTeam::class)
             ->tenantProfile(EditTeamProfile::class)
+            ->tenantRoutePrefix('team')
             ->colors([
                 'primary' => Color::Orange,
             ])
