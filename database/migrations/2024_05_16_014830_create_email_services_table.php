@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('email_services', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('team_id');
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
-            $table->foreignId('email_service_type_id');
+            $table->longText('config');
+            $table->foreignId('email_service_type_id')->constrained('email_service_types')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('campaign_emails', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('team_id');
-            $table->foreignId('subscriber_id');
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('subscriber_id')->constrained('subscribers')->onDelete('cascade');
             $table->string('subject');
             $table->string('from_name');
             $table->string('from_email');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('bounced_at')->nullable();
             $table->timestamp('unsubscribed_at')->nullable();
-            $table->timestamp('complained_at');
+            $table->timestamp('complained_at')->nullable();
             $table->timestamp('opened_at')->nullable();
             $table->timestamp('clicked_at')->nullable();
             $table->timestamps();

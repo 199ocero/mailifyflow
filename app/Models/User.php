@@ -19,8 +19,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // You may optionally implement your own logic here when a user has access to this panel.
-        return $this->email === '199ocero@gmail.com';
+        return true;
     }
 
     public function canAccessTenant(Model $tenant): bool

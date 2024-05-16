@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('team_id');
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
-            $table->foreignId('campaign_status_id');
-            $table->foreignId('template_id');
+            $table->string('subject');
+            $table->string('from_name');
+            $table->string('from_email');
+            $table->foreignId('template_id')->constrained('templates')->onDelete('cascade');
+            $table->longText('content');
+            $table->foreignId('campaign_status_id')->constrained('campaign_statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }

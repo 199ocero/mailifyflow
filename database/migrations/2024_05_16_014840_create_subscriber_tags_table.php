@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('subscriber_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('team_id');
-            $table->foreignId('tag_id');
-            $table->foreignId('subscriber_id');
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
+            $table->foreignId('subscriber_id')->constrained('subscribers')->onDelete('cascade');
             $table->timestamps();
         });
     }
