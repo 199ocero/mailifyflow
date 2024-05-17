@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\EmailListResource\Pages;
 use App\Filament\Admin\Resources\EmailListResource\RelationManagers;
 use App\Models\EmailList;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,21 +20,36 @@ class EmailListResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('team_id')
-                    ->relationship('team', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('active')
-                    ->required(),
+                Forms\Components\Section::make('Email List')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('List Name')
+                            ->placeholder('e.g. My List')
+                            ->required()
+                            ->string(),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Description')
+                            ->placeholder('e.g. List of emails to be sent')
+                            ->required(),
+                        Forms\Components\Fieldset::make('Controls')
+                            ->schema([
+                                Forms\Components\Toggle::make('active')
+                                    ->label('Active')
+                                    ->helperText('If disabled, this list will not be used for sending emails.')
+                                    ->default(true)
+                                    ->required(),
+                                Forms\Components\Toggle::make('default')
+                                    ->label('Default')
+                                    ->helperText('If enabled, this list will serve as the default list. If no default list exists, the latest list will be used instead.')
+                                    ->required(),
+                            ])
+                    ])
             ]);
     }
 
@@ -41,24 +57,27 @@ class EmailListResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('team.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
+                Tables\Columns\IconColumn::make('default')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Created')
+                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

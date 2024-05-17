@@ -29,6 +29,11 @@ class Team extends Model
         return $this->belongsToMany(EmailProvider::class, 'team_email_provider');
     }
 
+    public function emailLists(): BelongsToMany
+    {
+        return $this->belongsToMany(EmailList::class, 'team_email_list');
+    }
+
     public function subscribers(): BelongsToMany
     {
         return $this->belongsToMany(Subscriber::class, 'team_subscriber');
@@ -62,10 +67,5 @@ class Team extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function emailLists(): BelongsToMany
-    {
-        return $this->belongsToMany(EmailList::class, 'team_email_list');
     }
 }

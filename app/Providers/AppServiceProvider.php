@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\EmailList;
 use App\Models\EmailProvider;
 use App\Models\Template;
+use App\Observers\EmailListObserver;
 use App\Observers\EmailProviderObserver;
 use App\Observers\TemplateObserver;
 use Illuminate\Support\Facades\Blade;
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Template::observe(TemplateObserver::class);
         EmailProvider::observe(EmailProviderObserver::class);
+        EmailList::observe(EmailListObserver::class);
     }
 }
