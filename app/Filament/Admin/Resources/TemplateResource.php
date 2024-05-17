@@ -2,13 +2,14 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\TemplateResource\Pages;
-use App\Models\Template;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Template;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Admin\Resources\TemplateResource\Pages;
+use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
 
 class TemplateResource extends Resource
 {
@@ -16,13 +17,22 @@ class TemplateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('team_id')->nullable()->relationship('team', 'name'),
-                Forms\Components\TextInput::make('name'),
-                Forms\Components\Textarea::make('content'),
+                Forms\Components\Section::make('Template')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Template Name')
+                            ->placeholder('e.g. Newsletter')
+                            ->string()
+                            ->required(),
+                        MonacoEditor::make('content')
+                            ->language('html')
+                    ])
             ]);
     }
 
@@ -33,9 +43,7 @@ class TemplateResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable(),
 
             ])
-            ->filters([
-
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
