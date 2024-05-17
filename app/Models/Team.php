@@ -31,36 +31,41 @@ class Team extends Model
 
     public function subscribers(): BelongsToMany
     {
-        return $this->belongsToMany(Subscriber::class);
+        return $this->belongsToMany(Subscriber::class, 'team_subscriber');
     }
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'team_tag');
     }
 
     public function subscriberTags(): BelongsToMany
     {
-        return $this->belongsToMany(SubscriberTag::class);
+        return $this->belongsToMany(SubscriberTag::class, 'team_subscriber_tag');
     }
 
     public function templates(): BelongsToMany
     {
-        return $this->belongsToMany(Template::class);
+        return $this->belongsToMany(Template::class, 'team_template');
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'team_user');
     }
 
     public function campaignEmails(): BelongsToMany
     {
-        return $this->belongsToMany(CampaignEmail::class);
+        return $this->belongsToMany(CampaignEmail::class, 'team_campaign_email');
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function emailLists(): BelongsToMany
+    {
+        return $this->belongsToMany(EmailList::class, 'team_email_list');
     }
 }
