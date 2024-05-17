@@ -21,12 +21,12 @@ class Team extends Model
 
     public function campaigns(): BelongsToMany
     {
-        return $this->belongsToMany(Campaign::class);
+        return $this->belongsToMany(Campaign::class, 'team_campaign');
     }
 
-    public function emailServices(): BelongsToMany
+    public function emailProviders(): BelongsToMany
     {
-        return $this->belongsToMany(EmailService::class);
+        return $this->belongsToMany(EmailProvider::class, 'team_email_provider');
     }
 
     public function subscribers(): BelongsToMany

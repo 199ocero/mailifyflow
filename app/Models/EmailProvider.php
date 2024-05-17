@@ -11,12 +11,13 @@ class EmailProvider extends Model
     use HasFactory;
 
     protected $fillable = [
-        'team_id', 'name', 'email_provider_type_id',
+        'team_id',
+        'name',
+        'config',
+        'email_provider_type_id',
     ];
 
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     public function emailProviderType(): BelongsTo
     {

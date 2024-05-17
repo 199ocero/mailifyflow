@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('from_name');
             $table->string('from_email');
             $table->foreignId('template_id')->constrained('templates')->onDelete('cascade');
+            $table->foreignId('email_provider_id')->constrained('email_providers')->onDelete('cascade');
             $table->longText('content');
             $table->foreignId('campaign_status_id')->constrained('campaign_statuses')->onDelete('cascade');
             $table->timestamps();

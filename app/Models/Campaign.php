@@ -17,7 +17,7 @@ class Campaign extends Model
         'from_name',
         'from_email',
         'template_id',
-        'email_service_id',
+        'email_provider_id',
         'content',
         'campaign_status_id',
     ];
@@ -39,8 +39,8 @@ class Campaign extends Model
         return $this->belongsTo(Team::class, 'team_id');
     }
 
-    public function emailService(): BelongsTo
+    public function emailProvider(): BelongsTo
     {
-        return $this->belongsTo(EmailService::class, 'email_service_id');
+        return $this->belongsTo(EmailProvider::class, 'email_provider_id');
     }
 }
