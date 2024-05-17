@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\EmailServiceResource\Pages;
+namespace App\Filament\Admin\Resources\EmailProviderResource\Pages;
 
 use App\Filament\Admin\Resources\EmailProviderResource;
 use App\Models\EmailProviderType;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\EmailServiceResource\Pages;
+namespace App\Filament\Admin\Resources\EmailProviderResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

@@ -9,7 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Models\EmailProviderType;
-use App\Filament\Admin\Resources\EmailServiceResource\Pages;
+use App\Filament\Admin\Resources\EmailProviderResource\Pages;
 
 class EmailProviderResource extends Resource
 {

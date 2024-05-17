@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\EmailServiceResource\Pages;
+namespace App\Filament\Admin\Resources\EmailProviderResource\Pages;
 
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Admin\Resources\EmailProviderResource;
