@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\EmailProvider;
+use App\Models\Template;
+use App\Observers\EmailProviderObserver;
+use App\Observers\TemplateObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Filament\Support\Facades\FilamentView;
@@ -22,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Template::observe(TemplateObserver::class);
+        EmailProvider::observe(EmailProviderObserver::class);
     }
 }
