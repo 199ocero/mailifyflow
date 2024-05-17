@@ -2,13 +2,14 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\CampaignResource\Pages;
-use App\Models\Campaign;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Campaign;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Admin\Resources\CampaignResource\Pages;
+use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
 
 class CampaignResource extends Resource
 {
@@ -16,14 +17,48 @@ class CampaignResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('team_id')->nullable()->relationship('team', 'name'),
-                Forms\Components\TextInput::make('name'),
-                Forms\Components\Select::make('campaign_status_id')->nullable()->relationship('campaignStatus', 'name'),
-                Forms\Components\Select::make('template_id')->nullable()->relationship('template', 'name'),
+                Forms\Components\Section::make('Campaign')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Campaign Name')
+                            ->placeholder('e.g. Newsletter')
+                            ->string()
+                            ->required(),
+                        Forms\Components\TextInput::make('subject')
+                            ->label('Email Subject')
+                            ->placeholder('e.g. Welcome to MailifyFlow')
+                            ->string()
+                            ->required(),
+                        Forms\Components\TextInput::make('from_name')
+                            ->label('From Name')
+                            ->placeholder('e.g. MailifyFlow')
+                            ->string()
+                            ->required(),
+                        Forms\Components\TextInput::make('from_email')
+                            ->label('From Email')
+                            ->placeholder('e.g. mailifyflow@example.com')
+                            ->string()
+                            ->required(),
+                        Forms\Components\Select::make('template_id')
+                            ->label('Template')
+                            ->placeholder('Select Template')
+                            ->required()
+                            ->relationship('template', 'name'),
+                        Forms\Components\Select::make('email_provider_id')
+                            ->label('Email Provider')
+                            ->placeholder('Select Email Provider')
+                            ->required()
+                            ->relationship('emailProvider', 'name'),
+                        MonacoEditor::make('content')
+                            ->language('html')
+                            ->required()
+                    ])
             ]);
     }
 
@@ -31,12 +66,16 @@ class CampaignResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable(),
-
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Campaign Name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subject')
+                    ->label('Email Subject')
+                    ->searchable()
+                    ->sortable(),
             ])
-            ->filters([
-
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
