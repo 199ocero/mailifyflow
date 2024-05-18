@@ -1,28 +1,29 @@
 <?php
 
 namespace App\Filament\Admin\Resources;
-use App\Models\EmailProvider;
+
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\EmailProvider;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use App\Models\EmailProviderType;
 use App\Filament\Admin\Resources\EmailProviderResource\Pages;
+use Illuminate\Support\HtmlString;
 
 class EmailProviderResource extends Resource
 {
     protected static ?string $model = EmailProvider::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-server-stack';
 
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
-        $emailProviderType = EmailProviderType::query()->get();
-
         return $form
             ->schema([
                 Forms\Components\Section::make('Email Provider')
@@ -32,19 +33,10 @@ class EmailProviderResource extends Resource
                             ->placeholder('e.g. Amazon SES')
                             ->string()
                             ->required(),
-                        Forms\Components\Select::make('email_provider_type_id')
-                            ->label('Email Provider Type')
-                            ->placeholder('Select Provider Type')
-                            ->relationship('emailProviderType', 'name')
-                            ->required()
-                            ->live(onBlur: true),
-                        Forms\Components\Section::make(function (Get $get) use ($emailProviderType) {
-                            if ($get('email_provider_type_id')) {
-                                return $emailProviderType->find($get('email_provider_type_id'))->name . ' Configuration';
-                            }
-                            return 'Config';
-                        })
-                            ->description('Enter your email provider credentials below. Rest assured your credentials are safe and encrypted.')
+                        Forms\Components\Section::make('SMTP Credentials')
+                            ->description(function () {
+                                return new HtmlString("Enter your email provider credentials below. Rest assured your credentials are safe and encrypted. <span class='font-extrabold text-red-600 dark:text-red-400'>Note: It only works with Amazon SES</span>.");
+                            })
                             ->schema([
                                 Forms\Components\Group::make()
                                     ->schema([
@@ -82,9 +74,6 @@ class EmailProviderResource extends Resource
                                     ->columns(2)
                             ])
                             ->columns(1)
-                            ->visible(function (Get $get) {
-                                return $get('email_provider_type_id') != null;
-                            })
                     ])
             ]);
     }
@@ -93,12 +82,25 @@ class EmailProviderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created')
+                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
 
             ])
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

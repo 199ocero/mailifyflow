@@ -13,7 +13,9 @@ class ListEmailProviders extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add New Email Provider')
+                ->icon('heroicon-o-plus'),
         ];
     }
 }

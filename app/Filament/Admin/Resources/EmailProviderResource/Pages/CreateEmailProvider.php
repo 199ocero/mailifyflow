@@ -14,9 +14,7 @@ class CreateEmailProvider extends CreateRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -25,19 +23,15 @@ class CreateEmailProvider extends CreateRecord
      */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $emailProviderType = EmailProviderType::query()->find($data['email_provider_type_id']);
-
-        if($emailProviderType->name == EmailProviderTypeEnum::SMTP->value){
-            $data['config'] = Crypt::encrypt(
-                [
-                    'host' => $data['host'],
-                    'port' => $data['port'],
-                    'encryption' => $data['encryption'],
-                    'username' => $data['username'],
-                    'password' => $data['password']
-                ]
-            );
-        }
+        $data['config'] = Crypt::encrypt(
+            [
+                'host' => $data['host'],
+                'port' => $data['port'],
+                'encryption' => $data['encryption'],
+                'username' => $data['username'],
+                'password' => $data['password']
+            ]
+        );
 
         return $data;
     }

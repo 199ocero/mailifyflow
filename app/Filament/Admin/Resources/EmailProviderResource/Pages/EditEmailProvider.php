@@ -14,9 +14,7 @@ class EditEmailProvider extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -25,17 +23,13 @@ class EditEmailProvider extends EditRecord
      */
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $emailProviderType = EmailProviderType::query()->find($data['email_provider_type_id']);
-
         $config = Crypt::decrypt($data['config']);
 
-        if($emailProviderType->name == EmailProviderTypeEnum::SMTP->value){
-            $data['host'] = $config['host'];
-            $data['port'] = $config['port'];
-            $data['encryption'] = $config['encryption'];
-            $data['username'] = $config['username'];
-            $data['password'] = $config['password'];
-        }
+        $data['host'] = $config['host'];
+        $data['port'] = $config['port'];
+        $data['encryption'] = $config['encryption'];
+        $data['username'] = $config['username'];
+        $data['password'] = $config['password'];
 
         return $data;
     }
@@ -46,19 +40,15 @@ class EditEmailProvider extends EditRecord
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $emailProviderType = EmailProviderType::query()->find($data['email_provider_type_id']);
-
-        if($emailProviderType->name == EmailProviderTypeEnum::SMTP->value){
-            $data['config'] = Crypt::encrypt(
-                [
-                    'host' => $data['host'],
-                    'port' => $data['port'],
-                    'encryption' => $data['encryption'],
-                    'username' => $data['username'],
-                    'password' => $data['password']
-                ]
-            );
-        }
+        $data['config'] = Crypt::encrypt(
+            [
+                'host' => $data['host'],
+                'port' => $data['port'],
+                'encryption' => $data['encryption'],
+                'username' => $data['username'],
+                'password' => $data['password']
+            ]
+        );
 
         return $data;
     }
