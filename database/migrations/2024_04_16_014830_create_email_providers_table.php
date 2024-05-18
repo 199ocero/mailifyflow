@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
             $table->longText('config');
-            $table->foreignId('email_provider_type_id')->constrained('email_provider_types')->onDelete('cascade');
             $table->timestamps();
         });
     }

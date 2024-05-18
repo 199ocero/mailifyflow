@@ -13,16 +13,8 @@ class EmailProvider extends Model
     protected $fillable = [
         'team_id',
         'name',
-        'config',
-        'email_provider_type_id',
+        'config'
     ];
-
-    protected $casts = [];
-
-    public function emailProviderType(): BelongsTo
-    {
-        return $this->belongsTo(EmailProviderType::class);
-    }
 
     public function team(): BelongsTo
     {

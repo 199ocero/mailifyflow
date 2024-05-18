@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\CampaignStatusType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,13 @@ return new class extends Migration
             $table->foreignId('template_id')->constrained('templates')->onDelete('cascade');
             $table->foreignId('email_provider_id')->constrained('email_providers')->onDelete('cascade');
             $table->longText('content');
-            $table->foreignId('campaign_status_id')->constrained('campaign_statuses')->onDelete('cascade');
+            $table->enum('status', [
+                CampaignStatusType::DRAFT->value,
+                CampaignStatusType::QUEUED->value,
+                CampaignStatusType::SENDING->value,
+                CampaignStatusType::SENT->value,
+                CampaignStatusType::CANCELLED->value
+            ])->default(CampaignStatusType::DRAFT->value);
             $table->timestamps();
         });
     }
