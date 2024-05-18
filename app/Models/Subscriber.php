@@ -6,32 +6,51 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subscriber extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'team_id', 'email', 'first_name', 'last_name', 'unsubscribe_at', 'unsubscribe_event_type_id',
+        'team_id',
+        'email',
+        'first_name',
+        'last_name',
+        'unsubscribe_at',
+        'unsubscribe_event_type_id',
     ];
 
     protected $casts = [
-
+        'unsubscribe_at' => 'datetime',
     ];
 
     public function unsubscribeEventType(): BelongsTo
     {
-        return $this->belongsTo(UnsubscribeEventType::class, 'unsubscribe_event_type_id');
+        return $this->belongsTo(UnsubscribeEventType::class);
     }
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(Team::class);
     }
 
-    public function emailLists(): BelongsToMany
+    /**
+     * We have allowed a duplicate email address for a subscriber
+     * so each subscriber belongs to one email list
+     */
+    public function emailList(): BelongsTo
     {
-        return $this->belongsToMany(EmailList::class, 'email_list_subscribers', 'subscriber_id', 'email_list_id');
+        return $this->belongsTo(EmailList::class);
     }
 
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function campaignEmails(): HasMany
+    {
+        return $this->hasMany(CampaignEmail::class);
+    }
 }

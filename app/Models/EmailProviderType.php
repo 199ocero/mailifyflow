@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EmailProviderType extends Model
 {
@@ -13,7 +14,8 @@ class EmailProviderType extends Model
         'name',
     ];
 
-    protected $casts = [
-
-    ];
+    public function emailProviders(): BelongsToMany
+    {
+        return $this->belongsToMany(EmailProvider::class);
+    }
 }

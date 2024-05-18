@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CampaignStatus extends Model
 {
@@ -13,7 +14,8 @@ class CampaignStatus extends Model
         'name',
     ];
 
-    protected $casts = [
-
-    ];
+    public function campaigns(): BelongsToMany
+    {
+        return $this->belongsToMany(Campaign::class);
+    }
 }

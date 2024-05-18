@@ -26,21 +26,21 @@ class Campaign extends Model
 
     public function campaignStatus(): BelongsTo
     {
-        return $this->belongsTo(CampaignStatus::class, 'campaign_status_id');
+        return $this->belongsTo(CampaignStatus::class);
     }
 
     public function template(): BelongsTo
     {
-        return $this->belongsTo(Template::class, 'template_id');
+        return $this->belongsTo(Template::class);
     }
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(Team::class);
     }
 
     public function emailProvider(): BelongsTo
     {
-        return $this->belongsTo(EmailProvider::class, 'email_provider_id');
+        return $this->belongsTo(EmailProvider::class);
     }
 }

@@ -12,8 +12,4 @@ class UnsubscribeEventType extends Model
     protected $fillable = [
         'name',
     ];
-
-    protected $casts = [
-
-    ];
 }

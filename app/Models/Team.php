@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Team extends Model
 {
@@ -19,53 +20,38 @@ class Team extends Model
         'is_default' => 'boolean',
     ];
 
-    public function campaigns(): BelongsToMany
+    public function campaigns(): HasMany
     {
-        return $this->belongsToMany(Campaign::class, 'team_campaign');
+        return $this->hasMany(Campaign::class);
     }
 
-    public function emailProviders(): BelongsToMany
+    public function emailProviders(): HasMany
     {
-        return $this->belongsToMany(EmailProvider::class, 'team_email_provider');
+        return $this->hasMany(EmailProvider::class);
     }
 
-    public function emailLists(): BelongsToMany
+    public function emailLists(): HasMany
     {
-        return $this->belongsToMany(EmailList::class, 'team_email_list');
+        return $this->hasMany(EmailList::class);
     }
 
-    public function subscribers(): BelongsToMany
+    public function subscribers(): HasMany
     {
-        return $this->belongsToMany(Subscriber::class, 'team_subscriber');
+        return $this->hasMany(Subscriber::class);
     }
 
-    public function tags(): BelongsToMany
+    public function tags(): HasMany
     {
-        return $this->belongsToMany(Tag::class, 'team_tag');
+        return $this->hasMany(Tag::class);
     }
 
-    public function subscriberTags(): BelongsToMany
+    public function templates(): HasMany
     {
-        return $this->belongsToMany(SubscriberTag::class, 'team_subscriber_tag');
-    }
-
-    public function templates(): BelongsToMany
-    {
-        return $this->belongsToMany(Template::class, 'team_template');
+        return $this->hasMany(Template::class);
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'team_user');
-    }
-
-    public function campaignEmails(): BelongsToMany
-    {
-        return $this->belongsToMany(CampaignEmail::class, 'team_campaign_email');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class);
     }
 }

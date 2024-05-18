@@ -14,12 +14,10 @@ class Template extends Model
         'team_id', 'name', 'content',
     ];
 
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(Team::class);
     }
 }

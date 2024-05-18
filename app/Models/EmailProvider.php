@@ -21,11 +21,11 @@ class EmailProvider extends Model
 
     public function emailProviderType(): BelongsTo
     {
-        return $this->belongsTo(EmailProviderType::class, 'email_provider_type_id');
+        return $this->belongsTo(EmailProviderType::class);
     }
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(Team::class);
     }
 }
