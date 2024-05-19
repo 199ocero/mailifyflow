@@ -222,6 +222,19 @@ class TemplateResource extends Resource
                                             ])
                                             ->icon('heroicon-m-code-bracket')
                                             ->columns(1),
+                                        Forms\Components\Builder\Block::make('content')
+                                            ->label('Content')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('placeholder')
+                                                    ->label('Placeholder')
+                                                    ->default('{{content}}')
+                                                    ->helperText('Note: This is where your campaign content will be inserted.')
+                                                    ->required()
+                                                    ->readOnly()
+                                            ])
+                                            ->maxItems(1)
+                                            ->icon('heroicon-m-code-bracket')
+                                            ->columns(1),
                                     ])
                                     ->collapsible()
                                     ->cloneable()
