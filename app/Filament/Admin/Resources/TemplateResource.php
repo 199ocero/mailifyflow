@@ -4,14 +4,16 @@ namespace App\Filament\Admin\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
 use App\Models\Template;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\HtmlString;
+use Illuminate\Contracts\View\View;
 use App\Filament\Admin\Resources\TemplateResource\Pages;
-use Filament\Forms\Get;
+use Filament\Support\Enums\Alignment;
 
 class TemplateResource extends Resource
 {
@@ -39,14 +41,22 @@ class TemplateResource extends Resource
                                 <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_last_name}}</span> - this will be replaced by the subscriber last name, and
                                 <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_email}}</span> - this will be replaced by the subscriber email.");
                             })
-                            ->headerActions([
+                            ->footerActions([
                                 Forms\Components\Actions\Action::make('previewTemplate')
                                     ->label('Preview')
                                     ->icon('heroicon-o-eye')
-                                    ->action(function (Get $get) {
-                                        \dd($get('content'));
-                                    })
+                                    ->modalIcon('heroicon-o-eye')
+                                    ->modalHeading('Preview Template')
+                                    ->modalDescription('You can preview your email template here.')
+                                    ->modalSubmitAction(false)
+                                    ->modalCancelAction(false)
+                                    ->modalWidth('6xl')
+                                    ->modalContent(fn (Get $get): View => view(
+                                        'filament.template.preview',
+                                        ['content' => $get('content')],
+                                    ))
                             ])
+                            ->footerActionsAlignment(Alignment::Center)
                             ->schema([
                                 Forms\Components\Builder::make('content')
                                     ->label('Blocks')
@@ -76,6 +86,7 @@ class TemplateResource extends Resource
                                                 Forms\Components\Textarea::make('content')
                                                     ->label('Paragraph')
                                                     ->placeholder('e.g. Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+                                                    ->autosize()
                                                     ->required(),
                                             ])
                                             ->icon('heroicon-m-bars-3-bottom-left')
@@ -91,16 +102,15 @@ class TemplateResource extends Resource
                                                             ])
                                                             ->required(),
                                                         Forms\Components\TextInput::make('label')
-                                                            ->label('Label')
+                                                            ->label('Label (optional)')
                                                             ->placeholder('e.g. List')
-                                                            ->string()
-                                                            ->required(),
+                                                            ->string(),
                                                     ])
                                                     ->columns(2),
                                                 Forms\Components\Textarea::make('description')
-                                                    ->label('Description')
+                                                    ->label('Description (optional)')
                                                     ->placeholder('e.g. Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-                                                    ->required(),
+                                                    ->string(),
                                                 Forms\Components\Repeater::make('items')
                                                     ->simple(
                                                         Forms\Components\TextInput::make('content')
@@ -128,7 +138,6 @@ class TemplateResource extends Resource
                                                                 'left' => 'Left',
                                                                 'right' => 'Right',
                                                                 'center' => 'Center',
-                                                                'full' => 'Full',
                                                             ])
                                                             ->required(),
                                                         Forms\Components\Select::make('color')
@@ -180,7 +189,41 @@ class TemplateResource extends Resource
                                             ])
                                             ->icon('heroicon-m-arrows-up-down')
                                             ->columns(1),
+                                        Forms\Components\Builder\Block::make('quote')
+                                            ->schema([
+                                                Forms\Components\Textarea::make('label')
+                                                    ->label('Quote')
+                                                    ->placeholder('e.g. Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+                                                    ->autosize()
+                                                    ->required(),
+                                                Forms\Components\Select::make('color')
+                                                    ->options(
+                                                        collect(Color::all())
+                                                            ->mapWithKeys(fn ($color, $name) => [$name => "<div class='flex items-center justify-between gap-4'>
+                                                            <div class='w-4 h-4 rounded-full' style='background:rgb(" . $color[500] . ")'></div>
+                                                            <span>" . str($name)->title() . '</span>
+                                                            </div>'])
+                                                            ->reverse()
+                                                    )
+                                                    ->allowHtml()
+                                                    ->required(),
+                                            ])
+                                            ->icon('heroicon-m-chat-bubble-bottom-center-text')
+                                            ->columns(2),
+                                        Forms\Components\Builder\Block::make('code')
+                                            ->label('Code Snippet')
+                                            ->schema([
+                                                Forms\Components\Textarea::make('content')
+                                                    ->label('Content')
+                                                    ->placeholder('e.g. <p>Hello world</p>')
+                                                    ->autosize()
+                                                    ->helperText('Note: This is not custom HTML or CSS code. It is a code block same format with quotes.')
+                                                    ->required()
+                                            ])
+                                            ->icon('heroicon-m-code-bracket')
+                                            ->columns(1),
                                     ])
+                                    ->collapsible()
                                     ->cloneable()
                                     ->blockNumbers(false)
                                     ->required()
