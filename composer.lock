@@ -4,92 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b226de117c36b35ef08bea49a94b19a6",
+    "content-hash": "97790f1b4e3258b7f2b5cbaee02f755b",
     "packages": [
-        {
-            "name": "abdelhamiderrahmouni/filament-monaco-editor",
-            "version": "v0.2.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor.git",
-                "reference": "19ee073a593fe02865d8cfcad18db996f21b5fc5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/abdelhamiderrahmouni/filament-monaco-editor/zipball/19ee073a593fe02865d8cfcad18db996f21b5fc5",
-                "reference": "19ee073a593fe02865d8cfcad18db996f21b5fc5",
-                "shasum": ""
-            },
-            "require": {
-                "filament/forms": "^3.0",
-                "php": "^8.1",
-                "spatie/laravel-package-tools": "^1.15.0"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^7.9",
-                "nunomaduro/larastan": "^2.0.1",
-                "orchestra/testbench": "^8.0",
-                "pestphp/pest": "^2.1",
-                "pestphp/pest-plugin-arch": "^2.0",
-                "pestphp/pest-plugin-laravel": "^2.0",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "spatie/laravel-ray": "^1.26"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "AbdelhamidErrahmouni\\FilamentMonacoEditor\\MonacoEditorServiceProvider"
-                    ],
-                    "aliases": {
-                        "MonacoEditor": "AbdelhamidErrahmouni\\FilamentMonacoEditor\\Facades\\MonacoEditor"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "AbdelhamidErrahmouni\\FilamentMonacoEditor\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Abdelhamid Errahmouni",
-                    "email": "abdelhamid.errahmouni@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A monaco editor form field for filamentphp.",
-            "homepage": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor",
-            "keywords": [
-                "Abdelhamid Errahmouni",
-                "Monaco",
-                "code editor",
-                "filament monaco code editor",
-                "filament monaco editor",
-                "filamentphp",
-                "laravel",
-                "monaco editor",
-                "php"
-            ],
-            "support": {
-                "issues": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor/issues",
-                "source": "https://github.com/abdelhamiderrahmouni/filament-monaco-editor"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/AbdelhamidErrahmouni",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-05-16T10:37:32+00:00"
-        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.2.22",
@@ -5206,16 +5122,16 @@
         },
         {
             "name": "spatie/invade",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/invade.git",
-                "reference": "7b20a25486de69198e402da20dc924d8bcc8024a"
+                "reference": "b920f6411d21df4e8610a138e2e87ae4957d7f63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/invade/zipball/7b20a25486de69198e402da20dc924d8bcc8024a",
-                "reference": "7b20a25486de69198e402da20dc924d8bcc8024a",
+                "url": "https://api.github.com/repos/spatie/invade/zipball/b920f6411d21df4e8610a138e2e87ae4957d7f63",
+                "reference": "b920f6411d21df4e8610a138e2e87ae4957d7f63",
                 "shasum": ""
             },
             "require": {
@@ -5253,7 +5169,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/invade/tree/2.0.0"
+                "source": "https://github.com/spatie/invade/tree/2.1.0"
             },
             "funding": [
                 {
@@ -5261,7 +5177,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-07-19T18:55:36+00:00"
+            "time": "2024-05-17T09:06:10+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
