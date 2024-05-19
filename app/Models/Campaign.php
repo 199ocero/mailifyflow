@@ -19,15 +19,9 @@ class Campaign extends Model
         'template_id',
         'email_provider_id',
         'content',
-        'campaign_status_id',
     ];
 
     protected $casts = [];
-
-    public function campaignStatus(): BelongsTo
-    {
-        return $this->belongsTo(CampaignStatus::class);
-    }
 
     public function template(): BelongsTo
     {
