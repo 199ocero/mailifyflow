@@ -14,7 +14,9 @@ class Template extends Model
         'team_id', 'name', 'content',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'content' => 'array',
+    ];
 
     public function team(): BelongsTo
     {
