@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Template;
 use App\Models\EmailList;
 use App\Models\EmailProvider;
-use App\Models\Template;
-use App\Observers\EmailListObserver;
-use App\Observers\EmailProviderObserver;
 use App\Observers\TemplateObserver;
+use App\Observers\EmailListObserver;
+use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\EmailProviderObserver;
 use Filament\Support\Facades\FilamentView;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Select::configureUsing(function (Select $select): void {
+            $select->native(false);
+        });
+
         Template::observe(TemplateObserver::class);
         EmailProvider::observe(EmailProviderObserver::class);
         EmailList::observe(EmailListObserver::class);
