@@ -7,6 +7,6 @@ export default {
         './resources/views/filament/admin/**/*.blade.php',
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
-        './vendor/abdelhamiderrahmouni/filament-monaco-editor/resources/views/**/*.blade.php',
+        './vendor/awcodes/filament-tiptap-editor/resources/**/*.blade.php',
     ],
 }

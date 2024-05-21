@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "awcodes/filament-tiptap-editor": "^3.0",
         "barryvdh/laravel-debugbar": "^3.13",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
