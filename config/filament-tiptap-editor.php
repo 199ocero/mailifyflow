@@ -24,7 +24,7 @@ return [
         ],
         'simple' => ['blocks', 'heading', 'hr', 'bullet-list', 'ordered-list', 'checked-list', '|', 'bold', 'italic', 'lead', 'small', '|', 'link', 'media'],
         'minimal' => ['bold', 'italic', 'link', 'bullet-list', 'ordered-list'],
-        'mailifyflow' => ['hr', 'bullet-list', 'ordered-list', 'heading', '|', 'bold', 'italic', '|', 'link', 'media', '|', 'blocks'],
+        'mailifyflow' => ['hr', 'bullet-list', 'ordered-list', 'heading', '|', 'bold', 'italic', 'strike', 'underline', '|', 'link', 'media', '|', 'blocks'],
         'none' => [],
     ],
 
@@ -83,7 +83,7 @@ return [
     'disable_bubble_menus' => false,
     'disable_toolbar_menus' => false,
 
-    'bubble_menu_tools' => ['bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'lead', 'small', 'link'],
+    'bubble_menu_tools' => ['bold', 'italic', 'strike', 'underline', 'link'],
     'floating_menu_tools' => ['blocks', 'media', 'grid-builder', 'details', 'table', 'oembed', 'code-block'],
 
     /*
