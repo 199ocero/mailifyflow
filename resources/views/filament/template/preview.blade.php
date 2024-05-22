@@ -2,32 +2,40 @@
     @foreach ($content as $key => $item)
         @switch($item['type'])
             @case('heading')
-                @include('filament.template.blocks.heading', ['data' => $item['data']])
+                @include('filament.template.blocks.heading', ['data' => $item])
             @break
 
             @case('paragraph')
-                @include('filament.template.blocks.paragraph', ['data' => $item['data']])
+                @include('filament.template.blocks.paragraph', ['data' => $item])
             @break
 
-            @case('list')
-                @include('filament.template.blocks.list', ['data' => $item['data']])
+            @case('bulletList')
+                @include('filament.template.blocks.bullet-list', ['data' => $item])
             @break
 
-            @case('button')
-                @include('filament.template.blocks.button', ['data' => $item['data']])
+            @case('orderedList')
+                @include('filament.template.blocks.ordered-list', ['data' => $item])
             @break
 
-            @case('divider')
-                @include('filament.template.blocks.divider', ['data' => $item['data']])
+            @case('tiptapBlock')
+                @if ($item['attrs']['type'] == 'buttonBlock')
+                    @include('filament.template.blocks.button', ['data' => $item])
+                @elseif ($item['attrs']['type'] == 'quoteBlock')
+                    @include('filament.template.blocks.quote', ['data' => $item])
+                @endif
             @break
 
-            @case('quote')
-                @include('filament.template.blocks.quote', ['data' => $item['data']])
+            @case('horizontalRule')
+                @include('filament.template.blocks.divider')
             @break
 
-            @case('code')
+            {{-- @case('quote')
+                
+            @break --}}
+
+            {{-- @case('code')
                 @include('filament.template.blocks.code', ['data' => $item['data']])
-            @break
+            @break --}}
 
             @default
         @endswitch

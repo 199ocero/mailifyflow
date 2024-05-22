@@ -1,6 +1,23 @@
 @props(['data'])
 @php
-    switch ($data['color']) {
+    $pattern = '/JSON\.parse\(\'(.*?)\'\)/';
+    preg_match($pattern, $data['attrs']['data'], $matches);
+
+    // Extracted JSON string
+    $jsonStr = isset($matches[1]) ? $matches[1] : '';
+
+    $jsonString = preg_replace_callback(
+        '/\\\\u([0-9a-fA-F]{4})/',
+        function ($matches) {
+            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UCS-2BE');
+        },
+        $jsonStr,
+    );
+
+    // Decode the fixed JSON string into an associative array
+    $decodedData = json_decode($jsonString, true);
+
+    switch ($decodedData['color']) {
         case 'slate':
             $color = 'border-slate-300 bg-slate-50 dark:border-slate-300 dark:bg-slate-700';
             break;
@@ -96,7 +113,7 @@
 <div class="w-full">
     <blockquote class="p-4 my-4 border-s-4 {{ $color }} rounded-lg">
         <p class="text-xl italic font-medium leading-relaxed text-gray-900 dark:text-white">
-            {{ $data['label'] }}
+            {{ $decodedData['label'] }}
         </p>
     </blockquote>
 </div>

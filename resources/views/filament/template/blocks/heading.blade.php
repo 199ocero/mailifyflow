@@ -1,22 +1,22 @@
 @props(['data'])
 @php
-    switch ($data['type']) {
-        case 'h1':
+    switch ($data['attrs']['level']) {
+        case 1:
             $tagClass = 'text-3xl';
             break;
-        case 'h2':
+        case 2:
             $tagClass = 'text-2xl';
             break;
-        case 'h3':
+        case 3:
             $tagClass = 'text-xl';
             break;
-        case 'h4':
+        case 4:
             $tagClass = 'text-lg';
             break;
-        case 'h5':
+        case 5:
             $tagClass = 'text-base';
             break;
-        case 'h6':
+        case 6:
             $tagClass = 'text-sm';
             break;
         default:
@@ -25,7 +25,7 @@
     }
 @endphp
 <div class="w-full">
-    <h{{ $data['type'] }} class="font-bold {{ $tagClass }}">
-        {{ $data['label'] }}
-        </h{{ $data['type'] }}>
+    <h{{ $data['attrs']['level'] }} class="font-bold {{ $tagClass }}">
+        {{ $data['content'][0]['text'] }}
+        </h{{ $data['attrs']['level'] }}>
 </div>

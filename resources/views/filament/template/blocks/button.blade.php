@@ -1,6 +1,24 @@
 @props(['data'])
 @php
-    switch ($data['color']) {
+
+    $pattern = '/JSON\.parse\(\'(.*?)\'\)/';
+    preg_match($pattern, $data['attrs']['data'], $matches);
+
+    // Extracted JSON string
+    $jsonStr = isset($matches[1]) ? $matches[1] : '';
+
+    $jsonString = preg_replace_callback(
+        '/\\\\u([0-9a-fA-F]{4})/',
+        function ($matches) {
+            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UCS-2BE');
+        },
+        $jsonStr,
+    );
+
+    // Decode the fixed JSON string into an associative array
+    $decodedData = json_decode($jsonString, true);
+
+    switch ($decodedData['color']) {
         case 'slate':
             $color =
                 'bg-slate-600 hover:bg-slate-500 focus-visible:ring-slate-500/50 dark:bg-slate-500 dark:hover:bg-slate-400 dark:focus-visible:ring-slate-400/50';
@@ -93,7 +111,7 @@
             break;
     }
 
-    switch ($data['position']) {
+    switch ($decodedData['position']) {
         case 'left':
             $position = 'justify-start';
             break;
@@ -109,8 +127,8 @@
     }
 @endphp
 <div class="flex w-full {{ $position }}">
-    <a href="{{ $data['url'] }}" target="{{ $data['target'] }}"
+    <a href="{{ $decodedData['url'] }}" target="{{ $decodedData['target'] }}"
         class="{{ $color }} relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm  text-white">
-        {{ $data['label'] }}
+        {{ $decodedData['label'] }}
     </a>
 </div>

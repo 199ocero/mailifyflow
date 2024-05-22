@@ -56,7 +56,7 @@ class TemplateResource extends Resource
                                     ->modalWidth('6xl')
                                     ->modalContent(fn (Get $get): View => view(
                                         'filament.template.preview',
-                                        ['content' => $get('content')],
+                                        ['content' => json_decode(tiptap_converter()->asJSON($get('content')), true)['content']],
                                     ))
                             ])
                             ->footerActionsAlignment(Alignment::Center)
