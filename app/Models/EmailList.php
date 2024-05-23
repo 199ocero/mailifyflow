@@ -29,12 +29,8 @@ class EmailList extends Model
         return $this->belongsTo(Team::class);
     }
 
-    /**
-     * We have allowed a duplicate email address for a subscriber
-     * so each subscriber belongs to one email list
-     */
-    public function subscriber(): BelongsTo
+    public function subscribers(): BelongsToMany
     {
-        return $this->belongsTo(Subscriber::class);
+        return $this->belongsToMany(Subscriber::class);
     }
 }

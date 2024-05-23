@@ -13,7 +13,7 @@ class Subscriber extends Model
     use HasFactory;
 
     protected $fillable = [
-        'team_id',
+        'email_list_id',
         'email',
         'first_name',
         'last_name',
@@ -24,11 +24,6 @@ class Subscriber extends Model
     protected $casts = [
         'unsubscribe_at' => 'datetime',
     ];
-
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class);
-    }
 
     /**
      * We have allowed a duplicate email address for a subscriber

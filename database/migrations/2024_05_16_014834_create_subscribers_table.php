@@ -14,15 +14,15 @@ return new class extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('email_list_id')->constrained('email_lists')->onDelete('cascade');
             $table->string('email');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->enum('status', [
                 SubscriberStatusType::SUBSCRIBED->value,
                 SubscriberStatusType::UNSUBSCRIBED->value
             ])->default(SubscriberStatusType::SUBSCRIBED->value);
-            $table->timestamp('unsubscribe_at');
+            $table->timestamp('unsubscribe_at')->nullable()->default(null);
             $table->timestamps();
         });
     }
