@@ -17,18 +17,13 @@ class Subscriber extends Model
         'email',
         'first_name',
         'last_name',
+        'status',
         'unsubscribe_at',
-        'unsubscribe_event_type_id',
     ];
 
     protected $casts = [
         'unsubscribe_at' => 'datetime',
     ];
-
-    public function unsubscribeEventType(): BelongsTo
-    {
-        return $this->belongsTo(UnsubscribeEventType::class);
-    }
 
     public function team(): BelongsTo
     {
