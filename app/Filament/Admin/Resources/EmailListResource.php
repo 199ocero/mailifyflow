@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\EmailListResource\Pages;
 use App\Filament\Admin\Resources\EmailListResource\RelationManagers;
+use App\Filament\Imports\SubscriberImporter;
 use App\Models\EmailList;
 use Filament\Facades\Filament;
 use Filament\Forms;
@@ -18,7 +19,7 @@ class EmailListResource extends Resource
 {
     protected static ?string $model = EmailList::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope';
 
     protected static ?int $navigationSort = 1;
 
@@ -56,6 +57,14 @@ class EmailListResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\ImportAction::make()
+                    ->label('Import Subscribers')
+                    ->color('gray')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->importer(SubscriberImporter::class)
+                    ->modalHeading('Import Subscribers'),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
