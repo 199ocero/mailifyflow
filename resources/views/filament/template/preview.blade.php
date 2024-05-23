@@ -22,6 +22,8 @@
                     @include('filament.template.blocks.button', ['data' => $item])
                 @elseif ($item['attrs']['type'] == 'quoteBlock')
                     @include('filament.template.blocks.quote', ['data' => $item])
+                @elseif ($item['attrs']['type'] == 'contentBlock')
+                    @include('filament.template.blocks.content')
                 @endif
             @break
 

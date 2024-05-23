@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\TemplateResource\Blocks\ButtonBlock;
+use App\Filament\Admin\Resources\TemplateResource\Blocks\ContentBlock;
 use App\Filament\Admin\Resources\TemplateResource\Blocks\QuoteBlock;
 use Filament\Forms;
 use Filament\Tables;
@@ -39,7 +40,7 @@ class TemplateResource extends Resource
                             ->required(),
                         Forms\Components\Section::make('Template Builder')
                             ->description(function () {
-                                return new HtmlString("You can create a template by using the block builder. 
+                                return new HtmlString("You can create a template by using the tiptap editor with blocks. 
                                 You can also use some placeholders like <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_first_name}}</span> - this will be replaced by the subscriber first name, 
                                 <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_last_name}}</span> - this will be replaced by the subscriber last name, and
                                 <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_email}}</span> - this will be replaced by the subscriber email.");
@@ -68,8 +69,10 @@ class TemplateResource extends Resource
                                     ])
                                     ->blocks([
                                         ButtonBlock::class,
-                                        QuoteBlock::class
+                                        QuoteBlock::class,
+                                        ContentBlock::class
                                     ])
+                                    ->required()
                             ])
                     ])
             ]);
