@@ -79,7 +79,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'disable_floating_menus' => false,
+    'disable_floating_menus' => true,
     'disable_bubble_menus' => false,
     'disable_toolbar_menus' => false,
 
