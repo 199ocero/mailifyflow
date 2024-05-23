@@ -3,10 +3,14 @@
     $html = '';
 
     if (isset($data['content'])) {
-        foreach ($data['content'] as $element) {
-            $text = $element['text'];
-            $marks = isset($element['marks']) ? $element['marks'] : [];
 
+        foreach ($data['content'] as $element) {
+            if ($element['type'] == 'text') {
+                $text = $element['text'];
+            }
+            
+            $marks = isset($element['marks']) ? $element['marks'] : [];
+            
             foreach ($marks as $mark) {
                 switch ($mark['type']) {
                     case 'bold':
@@ -50,6 +54,10 @@
         }
     }
 @endphp
-<div class="w-full">
-    {!! $html !!}
-</div>
+<p class="w-full">
+    @if (empty($html))
+        <br>
+    @else
+        {!! $html !!}
+    @endif
+</p>
