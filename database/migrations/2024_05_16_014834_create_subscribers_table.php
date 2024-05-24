@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('email_list_id')->constrained('email_lists')->onDelete('cascade');
             $table->string('email');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

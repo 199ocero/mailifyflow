@@ -31,6 +31,6 @@ class EmailList extends Model
 
     public function subscribers(): BelongsToMany
     {
-        return $this->belongsToMany(Subscriber::class);
+        return $this->belongsToMany(Subscriber::class, 'email_list_subscriber');
     }
 }
