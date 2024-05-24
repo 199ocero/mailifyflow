@@ -9,6 +9,7 @@ use App\Models\EmailList;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -103,7 +104,7 @@ class EmailListResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\SubscribersRelationManager::class,
         ];
     }
 
