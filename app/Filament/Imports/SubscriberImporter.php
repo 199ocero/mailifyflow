@@ -51,7 +51,6 @@ class SubscriberImporter extends Importer
     public function resolveRecord(): ?Subscriber
     {
         return new Subscriber([
-            'email_list_id' => $this->options['email_list_id'],
             'email' => $this->data['email'],
             'first_name' => $this->data['first_name'],
             'last_name' => $this->data['last_name'],
@@ -68,5 +67,15 @@ class SubscriberImporter extends Importer
         }
 
         return $body;
+    }
+
+    public function saveRecord(): void
+    {
+        // Save the subscriber instance
+        $this->record->save();
+
+        // Attach the subscriber to the email list
+        $emailList = EmailList::findOrFail($this->options['email_list_id']);
+        $emailList->subscribers()->attach($this->record->id);
     }
 }
