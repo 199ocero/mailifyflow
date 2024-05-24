@@ -73,6 +73,10 @@ class EmailListResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('subscribersCount')
+                    ->label('Subscribers'),
+                Tables\Columns\TextColumn::make('duplicateSubscribersCount')
+                    ->label('Duplicates'),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('default')
@@ -81,7 +85,7 @@ class EmailListResource extends Resource
                     ->label('Created')
                     ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
                     ->sortable()
