@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\TemplateResource\Blocks;
+namespace App\Filament\Admin\Blocks;
 
 use Filament\Forms;
 use Filament\Support\Colors\Color;
