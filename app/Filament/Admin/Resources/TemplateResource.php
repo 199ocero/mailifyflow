@@ -2,9 +2,6 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\TemplateResource\Blocks\ButtonBlock;
-use App\Filament\Admin\Resources\TemplateResource\Blocks\ContentBlock;
-use App\Filament\Admin\Resources\TemplateResource\Blocks\QuoteBlock;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Get;
@@ -15,9 +12,12 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
-use App\Filament\Admin\Resources\TemplateResource\Pages;
 use Filament\Support\Enums\Alignment;
 use FilamentTiptapEditor\TiptapEditor;
+use App\Filament\Admin\Blocks\QuoteBlock;
+use App\Filament\Admin\Blocks\ButtonBlock;
+use App\Filament\Admin\Blocks\ContentBlock;
+use App\Filament\Admin\Resources\TemplateResource\Pages;
 
 class TemplateResource extends Resource
 {
@@ -57,12 +57,12 @@ class TemplateResource extends Resource
                                     ->modalWidth('6xl')
                                     ->modalContent(fn (Get $get): View => view(
                                         'filament.template.preview',
-                                        ['content' => json_decode(tiptap_converter()->asJSON($get('content')), true)['content']],
+                                        ['content' => json_decode(tiptap_converter()->asJSON($get('template_content')), true)['content']],
                                     ))
                             ])
                             ->footerActionsAlignment(Alignment::Center)
                             ->schema([
-                                TiptapEditor::make('content')
+                                TiptapEditor::make('template_content')
                                     ->profile('mailifyflow')
                                     ->extraInputAttributes([
                                         'style' => 'min-height: 50rem;'

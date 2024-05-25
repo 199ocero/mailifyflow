@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
-            $table->longText('content');
+            $table->longText('template_content');
             $table->timestamps();
         });
     }

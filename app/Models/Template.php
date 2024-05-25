@@ -11,11 +11,11 @@ class Template extends Model
     use HasFactory;
 
     protected $fillable = [
-        'team_id', 'name', 'content',
+        'team_id', 'name', 'template_content',
     ];
 
     protected $casts = [
-        'content' => 'array',
+        'template_content' => 'array',
     ];
 
     public function team(): BelongsTo
