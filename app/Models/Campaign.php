@@ -18,10 +18,12 @@ class Campaign extends Model
         'from_email',
         'template_id',
         'email_provider_id',
-        'content',
+        'campaign_content',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'campaign_content' => 'array',
+    ];
 
     public function template(): BelongsTo
     {
