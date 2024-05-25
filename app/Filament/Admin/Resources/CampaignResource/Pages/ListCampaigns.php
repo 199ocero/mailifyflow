@@ -13,7 +13,9 @@ class ListCampaigns extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add New Campaign')
+                ->icon('heroicon-o-plus'),
         ];
     }
 }
