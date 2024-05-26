@@ -52,6 +52,14 @@ class EmailListResource extends Resource
                                     ->required(),
                             ])
                     ])
+                    ->collapsible()
+                    ->collapsed(function (string $operation): bool {
+                        if ($operation === 'edit') {
+                            return true;
+                        }
+
+                        return false;
+                    })
             ]);
     }
 
