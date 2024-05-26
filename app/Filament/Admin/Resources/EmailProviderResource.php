@@ -20,7 +20,7 @@ class EmailProviderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-server-stack';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
