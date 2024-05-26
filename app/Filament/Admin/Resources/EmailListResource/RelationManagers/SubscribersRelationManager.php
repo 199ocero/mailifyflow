@@ -2,13 +2,16 @@
 
 namespace App\Filament\Admin\Resources\EmailListResource\RelationManagers;
 
+use App\Models\Tag;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Subscriber;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Imports\SubscriberRelationImporter;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Imports\SubscriberRelationImporter;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class SubscribersRelationManager extends RelationManager
@@ -54,10 +57,18 @@ class SubscribersRelationManager extends RelationManager
                     ->placeholder('No Last Name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('tags.name')
+                    ->placeholder('No Tags')
+                    ->badge(),
             ])
             ->defaultSort('subscribers.created_at', 'desc')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('tags')
+                    ->relationship('tags', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->multiple()
+                    ->native(false),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
@@ -75,12 +86,56 @@ class SubscribersRelationManager extends RelationManager
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('tags')
+                        ->label('Tags')
+                        ->icon('heroicon-o-tag')
+                        ->modalHeading('Tags')
+                        ->modalSubmitActionLabel('Save')
+                        ->modalDescription('You can assign or remove tags from this subscriber.')
+                        ->fillForm(fn (Subscriber $record): array => [
+                            'tag_id' => $record->tags->pluck('id'),
+                        ])
+                        ->form([
+                            Forms\Components\Select::make('tag_id')
+                                ->label('Select Tags')
+                                ->options(Tag::all()->pluck('name', 'id'))
+                                ->multiple()
+                                ->searchable(),
+                        ])
+                        ->action(function (Subscriber $record, array $data) {
+                            $record->tags()->sync($data['tag_id']);
+                        }),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('tags')
+                        ->label('Tags')
+                        ->icon('heroicon-o-tag')
+                        ->requiresConfirmation()
+                        ->modalIcon('heroicon-o-tag')
+                        ->modalHeading('Tags')
+                        ->modalSubmitActionLabel('Save')
+                        ->modalDescription('You can assign or remove tags from this subscriber.')
+                        ->form([
+                            Forms\Components\Select::make('tag_id')
+                                ->label('Select Tags')
+                                ->options(Tag::all()->pluck('name', 'id'))
+                                ->multiple()
+                                ->searchable(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $tagIds = $data['tag_id'] ?? [];
+
+                            $records->each(function ($record) use ($tagIds) {
+                                $record->tags()->sync($tagIds);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion()
                 ]),
             ]);
     }
