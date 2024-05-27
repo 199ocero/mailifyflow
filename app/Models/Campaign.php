@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Campaign extends Model
 {
@@ -19,6 +20,7 @@ class Campaign extends Model
         'from_email',
         'template_id',
         'email_provider_id',
+        'email_list_id',
         'campaign_content',
         'converted_content',
     ];
@@ -40,5 +42,15 @@ class Campaign extends Model
     public function emailProvider(): BelongsTo
     {
         return $this->belongsTo(EmailProvider::class);
+    }
+
+    public function emailList(): BelongsTo
+    {
+        return $this->belongsTo(EmailList::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'campaign_tag');
     }
 }

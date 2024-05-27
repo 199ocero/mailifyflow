@@ -26,4 +26,9 @@ class Tag extends Model
     {
         return $this->belongsToMany(Subscriber::class);
     }
+
+    public function campaigns(): BelongsToMany
+    {
+        return $this->belongsToMany(Campaign::class, 'campaign_tag');
+    }
 }

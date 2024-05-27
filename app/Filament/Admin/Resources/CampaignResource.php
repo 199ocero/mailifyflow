@@ -80,6 +80,26 @@ class CampaignResource extends Resource
                                     ->live(onBlur: true),
                             ])
                             ->columns(2),
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Select::make('email_list_id')
+                                    ->label('Email List')
+                                    ->placeholder('Select Email List')
+                                    ->required()
+                                    ->relationship('emailList', 'name')
+                                    ->searchable()
+                                    ->preload(),
+                                Forms\Components\Select::make('tag_id')
+                                    ->label('Filter Email List By Tag')
+                                    ->placeholder('Select Tag')
+                                    ->required()
+                                    ->relationship('tags', 'name')
+                                    ->searchable()
+                                    ->multiple()
+                                    ->preload()
+                                    ->helperText('Only subscribers on the email list with these tags will be included in the campaign.'),
+                            ])
+                            ->columns(2),
                         Forms\Components\Section::make('Content')
                             ->description(function () {
                                 return new HtmlString("The content below will be used inside the template in the <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{content}}</span> placeholder. You can also use some placeholders like <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_first_name}}</span> - this will be replaced by the subscriber first name, 
@@ -137,6 +157,18 @@ class CampaignResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('subject')
                     ->label('Email Subject')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'draft' => 'gray',
+                        'queued' => 'primary',
+                        'sending' => 'info',
+                        'sent' => 'success',
+                        'cancelled' => 'danger',
+                    })
                     ->searchable()
                     ->sortable(),
             ])

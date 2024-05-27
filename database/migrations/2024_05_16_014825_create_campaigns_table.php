@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('from_email');
             $table->foreignId('template_id')->constrained('templates')->onDelete('cascade');
             $table->foreignId('email_provider_id')->constrained('email_providers')->onDelete('cascade');
+            $table->foreignId('email_list_id')->constrained('email_lists')->onDelete('cascade');
             $table->longText('campaign_content');
             $table->longText('converted_content');
             $table->enum('status', [
