@@ -3,14 +3,13 @@
     $html = '';
 
     if (isset($data['content'])) {
-
         foreach ($data['content'] as $element) {
             if ($element['type'] == 'text') {
                 $text = $element['text'];
             }
-            
+
             $marks = isset($element['marks']) ? $element['marks'] : [];
-            
+
             foreach ($marks as $mark) {
                 switch ($mark['type']) {
                     case 'bold':
@@ -54,7 +53,7 @@
         }
     }
 @endphp
-<p class="w-full">
+<p class="w-full m-0 leading-6">
     @if (empty($html))
         <br>
     @else

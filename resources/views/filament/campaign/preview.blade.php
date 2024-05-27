@@ -1,4 +1,4 @@
-<div class="grid gap-3 pt-5 border-t border-gray-200 dark:border-gray-800">
+<div class="grid gap-3 p-12 text-gray-800 bg-white rounded shadow-sm">
     @foreach ($templateContent as $key => $item)
         @switch($item['type'])
             @case('heading')

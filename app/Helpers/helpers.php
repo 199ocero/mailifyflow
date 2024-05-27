@@ -1,16 +1,19 @@
 <?php
 
-/**
- * Convert tiptap json to html
- *
- * @return response()
- */
+use Illuminate\Support\Facades\View;
 
-use Illuminate\Database\Eloquent\Casts\Json;
-
-if (!function_exists('convert_tiptap_json_to_html')) {
-    function convert_tiptap_json_to_html(Json $json)
+if (!function_exists('html_css_extractor')) {
+    function html_css_extractor(string | array $templateContent, string | array $campaignContent): string
     {
-        return app('tiptap')->toHtml($json);
+        return View::make("filament.campaign.maizzle-render", [
+            "templateContent" => tiptap_converter()->asJSON(
+                $templateContent,
+                true
+            )["content"],
+            "campaignContent" => tiptap_converter()->asJSON(
+                $campaignContent,
+                true
+            )["content"]
+        ])->render();
     }
 }

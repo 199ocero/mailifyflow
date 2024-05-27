@@ -11,27 +11,46 @@
 |
 */
 
+import path from 'path'; // for Node.js environment
+
+// Dynamically get root path based on environment
+let rootPath;
+if (typeof window === 'undefined') {
+    // Node.js environment
+    const fileURL = import.meta.url;
+    rootPath = path.dirname(new URL(fileURL).pathname);
+} else {
+    // Browser environment
+    rootPath = window.location.origin;
+}
+
 export default {
     env: 'production',
     build: {
-        tailwind: {
-            css: './maizzle/src/css/tailwind.css',
-            config: './maizzle/tailwind.config.js',
-            compiled: ''
-        },
         components: {
-            folders: ['./maizzle/src/components', './maizzle/src/templates', './maizzle/src/layouts'],
+            folders: [
+                `${rootPath}/src/components`,
+                `${rootPath}/src/templates`,
+                `${rootPath}/src/layouts`
+            ],
         },
         layouts: {
-            root: './maizzle/src/layouts',
+            root: `${rootPath}/src/layouts`,
         },
+        posthtml: {
+            options: {
+                directives: [
+                { name: '?php', start: '<', end: '>' }
+                ]
+            }
+        }
     },
     inlineCSS: {
-        attributeToStyle: true,
         styleToAttribute: {
             'background-color': 'bgcolor',
         },
-        applyWidthAttributes: ['table', 'td', 'th']
+        applyWidthAttributes: ['table', 'td', 'th'],
+        applyHeightAttributes: ['table', 'td', 'th']
     },
     removeUnusedCSS: true,
     prettify: true,

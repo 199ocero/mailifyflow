@@ -24,8 +24,6 @@
             break;
     }
 @endphp
-<div class="w-full">
-    <h{{ $data['attrs']['level'] }} class="font-bold {{ $tagClass }}">
-        {{ $data['content'][0]['text'] }}
-        </h{{ $data['attrs']['level'] }}>
-</div>
+<h{{ $data['attrs']['level'] }} class="font-bold m-0 leading-6 {{ $tagClass }}">
+    {{ $data['content'][0]['text'] }}
+    </h{{ $data['attrs']['level'] }}>

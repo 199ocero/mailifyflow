@@ -16,17 +16,20 @@ bodyClass: ${ bodyClass }
 ---
 
 <x-main>
-  <div class="${bodyClass} sm:px-4 font-sans">
+  <div class="font-sans bg-neutral-50 sm:px-4">
     ${ content }
   </div>
 </x-main>
 
 `
-Maizzle
-  .render(html, {
-      maizzle: maizzleConfig,
-      tailwind: {
-        config: tailwindConfig
-      },
-  })
-  .then(({html, config}) => console.log(html, config))
+Maizzle.render(
+  html,
+  {
+    maizzle: maizzleConfig,
+    tailwind: {
+      css: '@tailwind utilities;',
+      config: tailwindConfig,
+    },
+  }
+)
+  .then(({html}) => console.log(html))

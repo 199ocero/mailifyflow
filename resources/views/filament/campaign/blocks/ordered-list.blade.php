@@ -1,5 +1,5 @@
 @props(['data'])
-<ol class="grid gap-1 pl-8 list-decimal">
+<ol class="grid gap-1 pl-8 m-0 leading-6 list-decimal">
     @foreach ($data['content'] as $listItem)
         @if ($listItem['type'] === 'listItem')
             <li>

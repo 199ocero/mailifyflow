@@ -1,22 +1,26 @@
 @props(['data'])
 @php
 
-    $pattern = '/JSON\.parse\(\'(.*?)\'\)/';
-    preg_match($pattern, $data['attrs']['data'], $matches);
+    if (is_array($data['attrs']['data'])) {
+        $decodedData = $data['attrs']['data'];
+    } else {
+        $pattern = '/JSON\.parse\(\'(.*?)\'\)/';
+        preg_match($pattern, $data['attrs']['data'], $matches);
 
-    // Extracted JSON string
-    $jsonStr = isset($matches[1]) ? $matches[1] : '';
+        // Extracted JSON string
+        $jsonStr = isset($matches[1]) ? $matches[1] : '';
 
-    $jsonString = preg_replace_callback(
-        '/\\\\u([0-9a-fA-F]{4})/',
-        function ($matches) {
-            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UCS-2BE');
-        },
-        $jsonStr,
-    );
+        $jsonString = preg_replace_callback(
+            '/\\\\u([0-9a-fA-F]{4})/',
+            function ($matches) {
+                return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UCS-2BE');
+            },
+            $jsonStr,
+        );
 
-    // Decode the fixed JSON string into an associative array
-    $decodedData = json_decode($jsonString, true);
+        // Decode the fixed JSON string into an associative array
+        $decodedData = json_decode($jsonString, true);
+    }
 
     switch ($decodedData['color']) {
         case 'slate':
@@ -128,7 +132,7 @@
 @endphp
 <div class="flex w-full {{ $position }}">
     <a href="{{ $decodedData['url'] }}" target="{{ $decodedData['target'] }}"
-        class="{{ $color }} relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm  text-white">
+        class="{{ $color }} relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm  text-white [text-decoration:none]">
         {{ $decodedData['label'] }}
     </a>
 </div>
