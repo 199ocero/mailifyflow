@@ -19,6 +19,7 @@ class Campaign extends Model
         'template_id',
         'email_provider_id',
         'campaign_content',
+        'converted_content',
     ];
 
     protected $casts = [
