@@ -14,6 +14,7 @@ class Campaign extends Model
         'team_id',
         'name',
         'subject',
+        'preheader',
         'from_name',
         'from_email',
         'template_id',

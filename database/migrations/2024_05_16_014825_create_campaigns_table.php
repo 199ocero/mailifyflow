@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
             $table->string('subject');
+            $table->string('preheader');
             $table->string('from_name');
             $table->string('from_email');
             $table->foreignId('template_id')->constrained('templates')->onDelete('cascade');
