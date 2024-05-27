@@ -41,9 +41,11 @@ class TemplateResource extends Resource
                         Forms\Components\Section::make('Template Builder')
                             ->description(function () {
                                 return new HtmlString("You can create a template by using the tiptap editor with blocks. 
-                                You can also use some placeholders like <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_first_name}}</span> - this will be replaced by the subscriber first name, 
-                                <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_last_name}}</span> - this will be replaced by the subscriber last name, and
-                                <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{subscriber_email}}</span> - this will be replaced by the subscriber email.");
+                                You can also use some placeholders like <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_first_name}}</span> - this will be replaced by the subscriber first name, 
+                                <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_last_name}}</span> - this will be replaced by the subscriber last name, and
+                                <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_email}}</span> - this will be replaced by the subscriber email. You can also
+                                use ternary operators like <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{ \$subscriber_first_name ?? \$subscriber_last_name ?? \$subscriber_email}}</span> - if a first name is available, it will be used; otherwise, if a last name is available, it will be used; if neither is available, 
+                                the email will be used.");
                             })
                             ->footerActions([
                                 Forms\Components\Actions\Action::make('previewTemplate')
@@ -55,10 +57,16 @@ class TemplateResource extends Resource
                                     ->modalSubmitAction(false)
                                     ->modalCancelAction(false)
                                     ->modalWidth('6xl')
-                                    ->modalContent(fn (Get $get): View => view(
-                                        'filament.template.preview',
-                                        ['content' => json_decode(tiptap_converter()->asJSON($get('template_content')), true)['content']],
-                                    ))
+                                    ->modalContent(function (Get $get): View | null {
+                                        if ($get('template_content')) {
+                                            return view(
+                                                'filament.template.preview',
+                                                ['content' => json_decode(tiptap_converter()->asJSON($get('template_content')), true)['content']],
+                                            );
+                                        }
+
+                                        return null;
+                                    })
                             ])
                             ->footerActionsAlignment(Alignment::Center)
                             ->schema([
