@@ -42,6 +42,11 @@ class CampaignResource extends Resource
                             ->placeholder('e.g. Welcome to MailifyFlow')
                             ->string()
                             ->required(),
+                        Forms\Components\TextInput::make('preheader')
+                            ->label('Email Preheader')
+                            ->placeholder('e.g. Thank you for signing up!')
+                            ->string()
+                            ->required(),
                         Forms\Components\Group::make()
                             ->schema([
                                 Forms\Components\TextInput::make('from_name')
@@ -77,7 +82,11 @@ class CampaignResource extends Resource
                             ->columns(2),
                         Forms\Components\Section::make('Content')
                             ->description(function () {
-                                return new HtmlString("The content below will be used inside the template in the <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{content}}</span> placeholder.");
+                                return new HtmlString("The content below will be used inside the template in the <span class='font-extrabold text-primary-600 dark:text-primary-400'>{{content}}</span> placeholder. You can also use some placeholders like <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_first_name}}</span> - this will be replaced by the subscriber first name, 
+                                <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_last_name}}</span> - this will be replaced by the subscriber last name, and
+                                <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{\$subscriber_email}}</span> - this will be replaced by the subscriber email. You can also
+                                use ternary operators like <span class='font-extrabold text-primary-600 dark:text-primary-400'>@{{ \$subscriber_first_name ?? \$subscriber_last_name ?? \$subscriber_email}}</span> - if a first name is available, it will be used; otherwise, if a last name is available, it will be used; if neither is available, 
+                                the email will be used.");
                             })
                             ->footerActions([
                                 Forms\Components\Actions\Action::make('previewCampaign')
@@ -89,12 +98,16 @@ class CampaignResource extends Resource
                                     ->modalSubmitAction(false)
                                     ->modalCancelAction(false)
                                     ->modalWidth('6xl')
-                                    ->modalContent(function (Get $get): View {
-                                        $template = Template::find($get('template_id'));
-                                        return view('filament.campaign.preview', [
-                                            'templateContent' => json_decode(tiptap_converter()->asJSON($template->template_content), true)['content'],
-                                            'campaignContent' => json_decode(tiptap_converter()->asJSON($get('campaign_content')), true)['content'],
-                                        ]);
+                                    ->modalContent(function (Get $get): View | null {
+                                        if ($get('campaign_content') && $get('template_id')) {
+                                            $template = Template::find($get('template_id'));
+                                            return view('filament.campaign.preview', [
+                                                'templateContent' => json_decode(tiptap_converter()->asJSON($template->template_content), true)['content'],
+                                                'campaignContent' => json_decode(tiptap_converter()->asJSON($get('campaign_content')), true)['content'],
+                                            ]);
+                                        }
+
+                                        return null;
                                     })
                             ])
                             ->footerActionsAlignment(Alignment::Center)
