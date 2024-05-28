@@ -58,7 +58,8 @@ class MaizzleConverter
 
             return $html;
         } catch (ProcessFailedException $exception) {
-            return $exception->getMessage();
+            // Throw an exception if the process fails
+            throw new \Exception($exception->getProcess()->getErrorOutput());
         } catch (\Exception $exception) {
             return $exception->getMessage();
         }

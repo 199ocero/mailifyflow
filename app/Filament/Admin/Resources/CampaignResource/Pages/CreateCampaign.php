@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 use App\Models\Template;
 use Filament\Facades\Filament;
 use App\Services\MaizzleConverter;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Admin\Resources\CampaignResource;
 
@@ -29,12 +30,23 @@ class CreateCampaign extends CreateRecord
 
         $extractedHtmlCss = html_css_extractor($template->template_content, $data['campaign_content']);
 
-        $convertedContent = MaizzleConverter::make()->convert(
-            $data['subject'],
-            $data['preheader'],
-            'bg-gray-50',
-            $extractedHtmlCss
-        );
+        try {
+            $convertedContent = MaizzleConverter::make()->convert(
+                $data['subject'],
+                $data['preheader'],
+                'bg-gray-50',
+                $extractedHtmlCss
+            );
+        } catch (\Exception $e) {
+            Notification::make()
+                ->danger()
+                ->title('Error converting HTML content')
+                ->body($e->getMessage())
+                ->persistent()
+                ->send();
+        
+            $this->halt();
+        }
 
         $data['team_id'] = $team->id;
         $data['converted_content'] = $convertedContent;

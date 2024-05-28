@@ -32,4 +32,10 @@ Maizzle.render(
     },
   }
 )
-  .then(({html}) => console.log(html))
+.then(({html}) => {
+  process.stdout.write(html);
+})
+.catch(error => {
+  process.stderr.write(error.message);
+  process.exit(1);
+});
