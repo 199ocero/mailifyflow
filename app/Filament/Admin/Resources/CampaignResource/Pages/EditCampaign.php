@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 
+use App\Enum\CampaignStatusType;
 use App\Models\Template;
 use Filament\Facades\Filament;
 use App\Services\MaizzleConverter;
@@ -16,6 +17,11 @@ class EditCampaign extends EditRecord
     protected function getHeaderActions(): array
     {
         return [];
+    }
+
+    protected function authorizeAccess(): void
+    {
+        abort_unless($this->getRecord()->status == CampaignStatusType::DRAFT->value, 403);
     }
 
     protected function getRedirectUrl(): string
@@ -44,7 +50,7 @@ class EditCampaign extends EditRecord
                 ->body($e->getMessage())
                 ->persistent()
                 ->send();
-        
+
             $this->halt();
         }
 
