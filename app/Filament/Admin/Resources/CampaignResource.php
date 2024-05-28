@@ -9,11 +9,14 @@ use App\Models\Campaign;
 use App\Models\Template;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Facades\Filament;
+use App\Enum\CampaignStatusType;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
 use Filament\Support\Enums\Alignment;
 use FilamentTiptapEditor\TiptapEditor;
+use Filament\Notifications\Notification;
 use App\Filament\Admin\Blocks\QuoteBlock;
 use App\Filament\Admin\Blocks\ButtonBlock;
 use App\Filament\Admin\Resources\CampaignResource\Pages;
@@ -171,10 +174,101 @@ class CampaignResource extends Resource
                     })
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created')
+                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
+            ->recordUrl(null)
             ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('start_campaign')
+                        ->label('Start')
+                        ->visible(function (Campaign $record) {
+                            if (!in_array($record->status, [CampaignStatusType::DRAFT->value])) {
+                                return false;
+                            }
+
+                            return true;
+                        })
+                        ->icon('heroicon-o-play')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->modalIcon('heroicon-o-play')
+                        ->modalHeading(function (Campaign $record) {
+                            return new HtmlString("Start <span class='font-extrabold text-primary-600 dark:text-primary-400'>{$record->name}</span> Campaign?");
+                        })
+                        ->modalDescription('Are you sure you want to start this campaign? Once started, it will start the sending process.')
+                        ->action(function (Campaign $record) {
+                            $campaign = Campaign::find($record->id);
+
+                            $campaign->status = CampaignStatusType::QUEUED->value;
+                            $campaign->save();
+
+                            Notification::make()
+                                ->success()
+                                ->title('Campaign Started')
+                                ->body('The campaign has been started.')
+                                ->send();
+                        }),
+                    Tables\Actions\Action::make('cancel_campaign')
+                        ->label('Cancel')
+                        ->visible(function (Campaign $record) {
+                            if (!in_array($record->status, [CampaignStatusType::DRAFT->value])) {
+                                return false;
+                            }
+
+                            return true;
+                        })
+                        ->color('gray')
+                        ->icon('heroicon-o-x-circle')
+                        ->requiresConfirmation()
+                        ->modalHeading(function (Campaign $record) {
+                            return new HtmlString("Cancel <span class='font-extrabold text-primary-600 dark:text-primary-400'>{$record->name}</span> Campaign?");
+                        })
+                        ->modalDescription('Are you sure you want to cancel this campaign? Once cancelled, it will no longer be sent and you will need to create a new campaign.')
+                        ->action(function (Campaign $record) {
+                            $campaign = Campaign::find($record->id);
+
+                            $campaign->status = CampaignStatusType::CANCELLED->value;
+                            $campaign->save();
+
+                            Notification::make()
+                                ->success()
+                                ->title('Campaign Cancelled')
+                                ->body('The campaign has been cancelled.')
+                                ->send();
+                        }),
+                    Tables\Actions\EditAction::make()
+                        ->color('primary')
+                        ->visible(function (Campaign $record) {
+                            if ($record->status == CampaignStatusType::DRAFT->value) {
+                                return true;
+                            }
+
+                            return false;
+                        }),
+                    Tables\Actions\DeleteAction::make()
+                        ->visible(function (Campaign $record) {
+                            if (!in_array($record->status, [CampaignStatusType::DRAFT->value])) {
+                                return false;
+                            }
+
+                            return true;
+                        }),
+                    Tables\Actions\ReplicateAction::make()
+                        ->color('info')
+                        ->excludeAttributes(['status'])
+                        ->modal(false),
+                ])
+                    ->button()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
