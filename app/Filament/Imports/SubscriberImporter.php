@@ -2,15 +2,16 @@
 
 namespace App\Filament\Imports;
 
+use App\Models\Tag;
+use Filament\Forms;
+use App\Models\EmailList;
 use App\Models\Subscriber;
+use Illuminate\Support\Arr;
 use Filament\Facades\Filament;
 use App\Enum\SubscriberStatusType;
-use App\Models\EmailList;
-use Filament\Forms;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Models\Import;
-use Illuminate\Support\Arr;
 
 class SubscriberImporter extends Importer
 {
@@ -24,6 +25,11 @@ class SubscriberImporter extends Importer
                 ->options(EmailList::all()->where('team_id', Filament::getTenant()->id)->where('active', true)->pluck('name', 'id'))
                 ->searchable()
                 ->required(),
+            Forms\Components\Select::make('tags')
+                ->label('Tags')
+                ->options(Tag::query()->where('team_id', Filament::getTenant()->id)->pluck('name', 'id'))
+                ->multiple()
+                ->searchable(),
         ];
     }
 
@@ -77,5 +83,9 @@ class SubscriberImporter extends Importer
         // Attach the subscriber to the email list
         $emailList = EmailList::findOrFail($this->options['email_list_id']);
         $emailList->subscribers()->attach($this->record->id);
+
+        // Attach the tags
+        $subscriber = Subscriber::findOrFail($this->record->id);
+        $subscriber->tags()->attach($this->options['tags']);
     }
 }

@@ -8,6 +8,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use App\Models\Subscriber;
 use Filament\Tables\Table;
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -37,6 +38,12 @@ class SubscribersRelationManager extends RelationManager
                     ->placeholder('e.g. Doe')
                     ->nullable()
                     ->string(),
+                Forms\Components\Select::make('tags')
+                    ->label('Tags')
+                    ->relationship('tags', 'name')
+                    ->preload()
+                    ->nullable()
+                    ->multiple(),
             ])
             ->columns(1);
     }
@@ -61,6 +68,7 @@ class SubscribersRelationManager extends RelationManager
                     ->placeholder('No Tags')
                     ->badge(),
             ])
+            ->deferLoading()
             ->defaultSort('subscribers.created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('tags')
@@ -87,34 +95,14 @@ class SubscribersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('tags')
-                        ->label('Tags')
-                        ->icon('heroicon-o-tag')
-                        ->modalHeading('Tags')
-                        ->modalSubmitActionLabel('Save')
-                        ->modalDescription('You can assign or remove tags from this subscriber.')
-                        ->fillForm(fn (Subscriber $record): array => [
-                            'tag_id' => $record->tags->pluck('id'),
-                        ])
-                        ->form([
-                            Forms\Components\Select::make('tag_id')
-                                ->label('Select Tags')
-                                ->options(Tag::all()->pluck('name', 'id'))
-                                ->multiple()
-                                ->searchable(),
-                        ])
-                        ->action(function (Subscriber $record, array $data) {
-                            $record->tags()->sync($data['tag_id']);
-                        }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('tags')
-                        ->label('Tags')
+                        ->label('Assign Tags')
                         ->icon('heroicon-o-tag')
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-tag')
@@ -124,7 +112,7 @@ class SubscribersRelationManager extends RelationManager
                         ->form([
                             Forms\Components\Select::make('tag_id')
                                 ->label('Select Tags')
-                                ->options(Tag::all()->pluck('name', 'id'))
+                                ->options(Tag::query()->where('team_id', Filament::getTenant()->id)->pluck('name', 'id'))
                                 ->multiple()
                                 ->searchable(),
                         ])
@@ -135,7 +123,9 @@ class SubscribersRelationManager extends RelationManager
                                 $record->tags()->sync($tagIds);
                             });
                         })
-                        ->deselectRecordsAfterCompletion()
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Delete Subscribers'),
                 ]),
             ]);
     }
