@@ -338,7 +338,8 @@ class CampaignResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->poll();
     }
 
     public static function getPages(): array
