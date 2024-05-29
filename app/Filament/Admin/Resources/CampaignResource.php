@@ -334,11 +334,7 @@ class CampaignResource extends Resource
                 ])
                     ->button()
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
+            ->bulkActions([])
             ->poll();
     }
 
