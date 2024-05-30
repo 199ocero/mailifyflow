@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\CampaignStatusType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +14,14 @@ return new class extends Migration
     {
         Schema::create('campaign_emails', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('campaign_id')->constrained('campaigns')->onDelete('cascade');
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('subscriber_id')->constrained('subscribers')->onDelete('cascade');
-            $table->string('subject');
-            $table->string('from_name');
-            $table->string('from_email');
+            $table->enum('status', [
+                CampaignStatusType::SENT->value,
+                CampaignStatusType::FAILED->value
+            ]);
+            $table->longText('reason_failed')->nullable();
             $table->integer('open_count')->default('0');
             $table->integer('click_count')->default('0');
             $table->timestamp('queued_at')->nullable();

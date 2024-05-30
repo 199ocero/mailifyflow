@@ -2,26 +2,30 @@
 
 namespace App\Filament\Admin\Resources;
 
+use Throwable;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Get;
 use App\Models\Campaign;
 use App\Models\Template;
 use Filament\Forms\Form;
+use App\Jobs\CampaignJob;
+use Illuminate\Bus\Batch;
 use Filament\Tables\Table;
 use Filament\Facades\Filament;
 use App\Enum\CampaignStatusType;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Bus;
 use Filament\Support\Enums\Alignment;
 use FilamentTiptapEditor\TiptapEditor;
 use Filament\Notifications\Notification;
 use App\Filament\Admin\Blocks\QuoteBlock;
 use App\Filament\Admin\Blocks\ButtonBlock;
 use App\Filament\Admin\Resources\CampaignResource\Pages;
-use App\Jobs\CampaignJob;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class CampaignResource extends Resource
 {
@@ -172,6 +176,19 @@ class CampaignResource extends Resource
                         'sending' => 'info',
                         'sent' => 'success',
                         'cancelled' => 'danger',
+                        'failed' => 'danger',
+                        'sent_with_failure' => 'warning',
+                    })
+                    ->tooltip(function (string $state): string {
+                        return match ($state) {
+                            'draft' => 'The campaign is in draft status and can be edited.',
+                            'queued' => 'The campaign is ready and waiting to be sent.',
+                            'sending' => 'The campaign is currently being sent.',
+                            'sent' => 'The campaign has been successfully sent.',
+                            'cancelled' => 'The campaign has been cancelled and will not be sent.',
+                            'failed' => 'The campaign failed to send.',
+                            'sent_with_failure' => 'The campaign sent with some failures.',
+                        };
                     })
                     ->searchable()
                     ->sortable(),
@@ -208,79 +225,7 @@ class CampaignResource extends Resource
                         })
                         ->modalDescription('Are you sure you want to start this campaign? Once started, it will start the sending process.')
                         ->action(function (Campaign $record) {
-                            try {
-                                // Fetch the campaign with related email list subscribers and their tags
-                                $campaign = Campaign::query()->with([
-                                    'emailList.subscribers.tags',
-                                    'emailProvider',
-                                    'tags'
-                                ])->find($record->id);
-
-                                $jobs = [];
-
-                                // Get the tags of the campaign
-                                $campaignTags = $campaign->tags->pluck('id')->toArray();
-
-                                $subscribersWithCommonTags = [];
-
-                                foreach ($campaign->emailList->subscribers as $subscriber) {
-                                    // Get the tags of the subscriber
-                                    $subscriberTags = $subscriber->tags->pluck('id')->toArray();
-
-                                    // Check if there is an intersection between campaign tags and subscriber tags
-                                    $commonTags = array_intersect($campaignTags, $subscriberTags);
-
-                                    if (!empty($commonTags)) {
-                                        // If there are common tags, add this subscriber to the list
-                                        $subscribersWithCommonTags[] = $subscriber;
-                                    }
-                                }
-
-                                // If no subscribers have common tags, use all subscribers
-                                if (empty($subscribersWithCommonTags)) {
-                                    $subscribersWithCommonTags = $campaign->emailList->subscribers;
-                                }
-
-                                // Create jobs for the selected subscribers
-                                foreach ($subscribersWithCommonTags as $subscriber) {
-                                    $jobs[] = new CampaignJob($campaign, $subscriber);
-                                }
-
-                                $recipient = auth()->user();
-
-                                Bus::batch($jobs)
-                                    ->before(function () use ($campaign) {
-                                        $campaign->status = CampaignStatusType::QUEUED->value;
-                                        $campaign->save();
-                                    })
-                                    ->then(function () use ($campaign) {
-                                        $campaign->status = CampaignStatusType::SENDING->value;
-                                        $campaign->save();
-                                    })
-                                    ->finally(function () use ($campaign, $recipient) {
-                                        $campaign->status = CampaignStatusType::SENT->value;
-                                        $campaign->save();
-
-                                        Notification::make()
-                                            ->success()
-                                            ->title('Campaign Sent')
-                                            ->body('The campaign has been sent.')
-                                            ->sendToDatabase($recipient);
-                                    })
-                                    ->dispatch();
-
-                                Notification::make()
-                                    ->success()
-                                    ->title('Campaign Started')
-                                    ->body('The campaign has been started.')
-                                    ->send();
-                            } catch (\Exception $e) {
-                                Notification::make()
-                                    ->danger()
-                                    ->title('Error')
-                                    ->body($e->getMessage())
-                                    ->send();
-                            }
+                            self::campaignJob($record);
                         }),
                     Tables\Actions\Action::make('cancel_campaign')
                         ->label('Cancel')
@@ -345,5 +290,91 @@ class CampaignResource extends Resource
             'create' => Pages\CreateCampaign::route('/create'),
             'edit' => Pages\EditCampaign::route('/{record}/edit'),
         ];
+    }
+
+    protected static function campaignJob(Campaign $record): void
+    {
+        try {
+            // Fetch the campaign with related email list subscribers and their tags
+            $campaign = Campaign::query()->with([
+                'emailList.subscribers.tags',
+                'emailProvider',
+                'tags'
+            ])->find($record->id);
+
+            $jobs = [];
+
+            // Get the tags of the campaign
+            $campaignTags = $campaign->tags->pluck('id')->toArray();
+
+            $subscribersWithCommonTags = [];
+
+            foreach ($campaign->emailList->subscribers as $subscriber) {
+                // Get the tags of the subscriber
+                $subscriberTags = $subscriber->tags->pluck('id')->toArray();
+
+                // Check if there is an intersection between campaign tags and subscriber tags
+                $commonTags = array_intersect($campaignTags, $subscriberTags);
+
+                if (!empty($commonTags)) {
+                    // If there are common tags, add this subscriber to the list
+                    $subscribersWithCommonTags[] = $subscriber;
+                }
+            }
+
+            // If no subscribers have common tags, use all subscribers
+            if (empty($subscribersWithCommonTags)) {
+                $subscribersWithCommonTags = $campaign->emailList->subscribers;
+            }
+
+            // Create jobs for the selected subscribers
+            foreach ($subscribersWithCommonTags as $subscriber) {
+                $jobs[] = new CampaignJob($campaign, $subscriber);
+            }
+
+            $recipient = auth()->user();
+
+            $batch = Bus::batch($jobs)
+                ->finally(function (Batch $batch) use ($campaign, $recipient) {
+
+                    if ($batch->hasFailures()) {
+                        $campaign->status = CampaignStatusType::SENT_WITH_FAILURE->value;
+                        $campaign->save();
+
+                        Notification::make()
+                            ->danger()
+                            ->title('Campaign Sent with Failure')
+                            ->body("There are {$batch->failedJobs} failures in the campaign. Please check the campaign logs.")
+                            ->sendToDatabase($recipient);
+                    } else {
+                        $campaign->status = CampaignStatusType::SENT->value;
+                        $campaign->save();
+
+                        Notification::make()
+                            ->success()
+                            ->title('Campaign Sent Successfully')
+                            ->body("There are {$batch->totalJobs} jobs in the campaign that were sent successfully.")
+                            ->sendToDatabase($recipient);
+                    }
+                })
+                ->allowFailures()
+                ->dispatch();
+
+            $campaign->status = CampaignStatusType::QUEUED->value;
+            $campaign->job_id = $batch->id;
+            $campaign->save();
+
+            Notification::make()
+                ->success()
+                ->title('Campaign Started')
+                ->body('The campaign has been started.')
+                ->send();
+        } catch (\Exception $e) {
+            Notification::make()
+                ->danger()
+                ->title('Error')
+                ->body($e->getMessage())
+                ->send();
+        }
     }
 }

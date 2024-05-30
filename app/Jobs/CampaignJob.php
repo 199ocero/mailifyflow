@@ -2,11 +2,16 @@
 
 namespace App\Jobs;
 
+use Throwable;
+use App\Models\User;
 use App\Models\Campaign;
 use App\Mail\CampaignMail;
 use App\Models\Subscriber;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use App\Enum\CampaignStatusType;
+use App\Models\CampaignEmail;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Queue\SerializesModels;
@@ -19,11 +24,19 @@ class CampaignJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
     /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
+
+    /**
      * Create a new job instance.
      */
-    public function __construct(public Campaign $campaign, public Subscriber $subscriber)
-    {
-        //
+    public function __construct(
+        public Campaign $campaign,
+        public Subscriber $subscriber
+    ) {
     }
 
     /**
@@ -31,6 +44,11 @@ class CampaignJob implements ShouldQueue
      */
     public function handle(): void
     {
+        if ($this->batching() && $this->campaign->status === CampaignStatusType::QUEUED->value) {
+            $this->campaign->status = CampaignStatusType::SENDING->value;
+            $this->campaign->save();
+        }
+
         $config = Crypt::decrypt($this->campaign->emailProvider->config);
 
         // Customize your SMTP settings here
@@ -43,5 +61,32 @@ class CampaignJob implements ShouldQueue
         ]);
 
         Mail::to($this->subscriber->email)->send(new CampaignMail($this->campaign, $this->subscriber));
+
+        // Create campaign email record
+        CampaignEmail::query()->create([
+            'team_id' => $this->campaign->team_id,
+            'campaign_id' => $this->campaign->id,
+            'subscriber_id' => $this->subscriber->id,
+            'status' => CampaignStatusType::SENT->value,
+            'queued_at' => $this->campaign->created_at,
+            'sent_at' => now(),
+        ]);
+    }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(?Throwable $exception)
+    {
+        // Create campaign email record
+        CampaignEmail::query()->create([
+            'team_id' => $this->campaign->team_id,
+            'campaign_id' => $this->campaign->id,
+            'subscriber_id' => $this->subscriber->id,
+            'status' => CampaignStatusType::FAILED->value,
+            'reason_failed' => $exception->getMessage(),
+            'queued_at' => $this->campaign->created_at,
+            'sent_at' => now(),
+        ]);
     }
 }
