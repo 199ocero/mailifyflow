@@ -12,6 +12,7 @@ class Campaign extends Model
     use HasFactory;
 
     protected $fillable = [
+        'job_id',
         'team_id',
         'name',
         'subject',

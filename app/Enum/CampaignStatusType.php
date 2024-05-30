@@ -9,4 +9,6 @@ enum CampaignStatusType: string
     case SENDING = 'sending';
     case SENT = 'sent';
     case CANCELLED = 'cancelled';
+    case FAILED = 'failed';
+    case SENT_WITH_FAILURE = 'sent_with_failure';
 }

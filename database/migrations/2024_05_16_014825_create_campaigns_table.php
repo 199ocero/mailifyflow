@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->uuid('job_id')->nullable()->default(null);
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('name');
             $table->string('subject');
@@ -30,7 +31,9 @@ return new class extends Migration
                 CampaignStatusType::QUEUED->value,
                 CampaignStatusType::SENDING->value,
                 CampaignStatusType::SENT->value,
-                CampaignStatusType::CANCELLED->value
+                CampaignStatusType::CANCELLED->value,
+                CampaignStatusType::FAILED->value,
+                CampaignStatusType::SENT_WITH_FAILURE->value
             ])->default(CampaignStatusType::DRAFT->value);
             $table->timestamps();
         });
