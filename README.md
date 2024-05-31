@@ -1,8 +1,7 @@
 
 # MailifyFlow
 
-An email marketing tool built on top of Laravel, FilamentPHP, and Maizzle.
-
+An email marketing tool built on top of Laravel, FilamentPHP, Maizzle, and Amazon SES.
 
 ## Acknowledgements
 
