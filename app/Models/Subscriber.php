@@ -17,6 +17,7 @@ class Subscriber extends Model
         'first_name',
         'last_name',
         'status',
+        'unsubscribe_type',
         'unsubscribe_at',
     ];
 
