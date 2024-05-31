@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\EmailListResource\RelationManagers;
 
+use App\Enum\SubscriberStatusType;
 use App\Models\Tag;
 use Filament\Forms;
 use Filament\Tables;
@@ -67,6 +68,27 @@ class SubscribersRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('tags.name')
                     ->placeholder('No Tags')
                     ->badge(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        SubscriberStatusType::SUBSCRIBED->value => 'success',
+                        SubscriberStatusType::UNSUBSCRIBED->value => 'danger',
+                    })
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('unsubscribe_type')
+                    ->label('Unsubscribe Type')
+                    ->placeholder('No Unsubscribe Type')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('unsubscribe_at')
+                    ->label('Unsubscribe Date')
+                    ->placeholder('No Unsubscribe Date')
+                    ->date('F j, Y \a\t g:i A', Filament::getTenant()->timezone)
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->deferLoading()
             ->defaultSort('subscribers.created_at', 'desc')
