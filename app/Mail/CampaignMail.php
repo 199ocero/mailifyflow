@@ -6,12 +6,13 @@ use App\Models\Campaign;
 use App\Models\Subscriber;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Blade;
 
 class CampaignMail extends Mailable
 {
@@ -49,6 +50,19 @@ class CampaignMail extends Mailable
 
         return new Content(
             htmlString: $renderedContent
+        );
+    }
+
+    /**
+     * Get the message headers.
+     */
+    public function headers(): Headers
+    {
+        return new Headers(
+            text: [
+                'Campaign-Id' => $this->campaign->id,
+                'Subscriber-Id' => $this->subscriber->id,
+            ],
         );
     }
 
