@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 
+use App\Enum\CampaignLogStatusType;
 use Filament\Tables;
 use Filament\Infolists;
 use Filament\Tables\Table;
@@ -87,9 +88,12 @@ class CampaignLogs extends Page implements HasForms, HasTable
                     ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'sent' => 'success',
-                        'failed' => 'danger',
-                        'sent_with_failure' => 'warning',
+                        CampaignLogStatusType::BOUNCE->value => 'danger',
+                        CampaignLogStatusType::COMPLAINT->value => 'yellow',
+                        CampaignLogStatusType::SENT->value => 'blue',
+                        CampaignLogStatusType::DELIVERED->value => 'success',
+                        CampaignLogStatusType::REJECTED->value => 'danger',
+                        CampaignLogStatusType::FAILED->value => 'danger',
                     })
                     ->searchable()
                     ->sortable()
@@ -131,9 +135,12 @@ class CampaignLogs extends Page implements HasForms, HasTable
                                     ->label('Status')
                                     ->badge()
                                     ->color(fn (string $state): string => match ($state) {
-                                        'sent' => 'success',
-                                        'failed' => 'danger',
-                                        'sent_with_failure' => 'warning',
+                                        CampaignLogStatusType::BOUNCE->value => 'danger',
+                                        CampaignLogStatusType::COMPLAINT->value => 'yellow',
+                                        CampaignLogStatusType::SENT->value => 'blue',
+                                        CampaignLogStatusType::DELIVERED->value => 'success',
+                                        CampaignLogStatusType::REJECTED->value => 'danger',
+                                        CampaignLogStatusType::FAILED->value => 'danger',
                                     }),
                                 Infolists\Components\TextEntry::make('reason_failed')
                                     ->label('Reason of Failure')
