@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Enum\CampaignLogStatusType;
 use Throwable;
-use App\Models\User;
 use App\Models\Campaign;
 use App\Mail\CampaignMail;
 use App\Models\Subscriber;
@@ -11,7 +11,6 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use App\Enum\CampaignStatusType;
 use App\Models\CampaignEmail;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Queue\SerializesModels;
@@ -67,7 +66,7 @@ class CampaignJob implements ShouldQueue
             'team_id' => $this->campaign->team_id,
             'campaign_id' => $this->campaign->id,
             'subscriber_id' => $this->subscriber->id,
-            'status' => CampaignStatusType::SENT->value,
+            'status' => CampaignLogStatusType::SENT->value,
             'queued_at' => $this->campaign->created_at,
             'sent_at' => now(),
         ]);
@@ -83,7 +82,7 @@ class CampaignJob implements ShouldQueue
             'team_id' => $this->campaign->team_id,
             'campaign_id' => $this->campaign->id,
             'subscriber_id' => $this->subscriber->id,
-            'status' => CampaignStatusType::FAILED->value,
+            'status' => CampaignLogStatusType::FAILED->value,
             'reason_failed' => $exception->getMessage(),
             'queued_at' => $this->campaign->created_at,
             'sent_at' => now(),
