@@ -35,7 +35,7 @@ class EmailProviderResource extends Resource
                             ->required(),
                         Forms\Components\Section::make('SMTP Credentials')
                             ->description(function () {
-                                return new HtmlString("Enter your email provider credentials below. Rest assured your credentials are safe and encrypted. <span class='font-extrabold text-red-600 dark:text-red-400'>Note: It only works with Amazon SES</span>.");
+                                return new HtmlString("<span class='font-extrabold text-red-600 dark:text-red-400'>Note: To track email delivery, bounces, clicks, opens, etc., please ensure you add your AWS key, secret, and region in the .env variable. The system is currently configured only for AWS SES and if you don't want to track any of this and just want to send emails, you can try adding another SMTP server, but we cannot guarantee it will work.</span>");
                             })
                             ->schema([
                                 Forms\Components\Group::make()
