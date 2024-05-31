@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\SubscriberStatusType;
+use App\Enum\UnsubscribeEventType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,12 @@ return new class extends Migration
                 SubscriberStatusType::SUBSCRIBED->value,
                 SubscriberStatusType::UNSUBSCRIBED->value
             ])->default(SubscriberStatusType::SUBSCRIBED->value);
+            $table->enum('unsubscribe_type', [
+                UnsubscribeEventType::BOUNCE->value,
+                UnsubscribeEventType::COMPLAINT->value,
+                UnsubscribeEventType::MANUAL_BY_ADMIN->value,
+                UnsubscribeEventType::MANUAL_BY_SUBSCRIBER->value
+            ])->nullable()->default(null);
             $table->timestamp('unsubscribe_at')->nullable()->default(null);
             $table->timestamps();
         });
