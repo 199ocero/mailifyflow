@@ -276,6 +276,22 @@ class CampaignResource extends Resource
                         ->color('info')
                         ->excludeAttributes(['status'])
                         ->modal(false),
+                    Tables\Actions\Action::make('view_logs')
+                        ->label('View Logs')
+                        ->color('purple')
+                        ->icon('heroicon-o-document-magnifying-glass')
+                        ->visible(function (Campaign $record) {
+                            if (in_array($record->status, [
+                                CampaignStatusType::SENT_WITH_FAILURE->value,
+                                CampaignStatusType::SENT->value,
+                                CampaignStatusType::FAILED->value,
+                            ])) {
+                                return true;
+                            }
+
+                            return false;
+                        })
+                        ->url(fn (Campaign $record) => Pages\CampaignLogs::getUrl(['record' => $record->id])),
                 ])
                     ->button()
             ])
@@ -289,6 +305,7 @@ class CampaignResource extends Resource
             'index' => Pages\ListCampaigns::route('/'),
             'create' => Pages\CreateCampaign::route('/create'),
             'edit' => Pages\EditCampaign::route('/{record}/edit'),
+            'logs' => Pages\CampaignLogs::route('/{record}/logs'),
         ];
     }
 
@@ -342,7 +359,7 @@ class CampaignResource extends Resource
                         $campaign->save();
 
                         Notification::make()
-                            ->danger()
+                            ->warning()
                             ->title('Campaign Sent with Failure')
                             ->body("There are {$batch->failedJobs} failures in the campaign. Please check the campaign logs.")
                             ->sendToDatabase($recipient);
