@@ -1,6 +1,6 @@
 <?php
 
-use App\Enum\CampaignStatusType;
+use App\Enum\CampaignLogStatusType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +18,12 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('subscriber_id')->constrained('subscribers')->onDelete('cascade');
             $table->enum('status', [
-                CampaignStatusType::SENT->value,
-                CampaignStatusType::FAILED->value
+                CampaignLogStatusType::BOUNCE->value,
+                CampaignLogStatusType::COMPLAINT->value,
+                CampaignLogStatusType::SENT->value,
+                CampaignLogStatusType::DELIVERED->value,
+                CampaignLogStatusType::REJECTED->value,
+                CampaignLogStatusType::FAILED->value
             ]);
             $table->longText('reason_failed')->nullable();
             $table->integer('open_count')->default('0');
