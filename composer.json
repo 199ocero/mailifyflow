@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ankurk91/laravel-ses-webhooks": "^4.3",
         "awcodes/filament-tiptap-editor": "^3.0",
+        "aws/aws-sdk-php": "^3.308",
         "barryvdh/laravel-debugbar": "^3.13",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
