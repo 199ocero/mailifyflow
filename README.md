@@ -18,6 +18,9 @@ A special acknowledgment goes to these remarkable tools, as MailifyFlow owes its
 - PHP 8.2+
 - Node v20.3.1+
 - Composer v2.7.6+
+
+> [!CAUTION]
+> ***To track email delivery, bounces, clicks, opens, etc., please ensure you add your AWS key, secret, and region in the .env variable. The system is currently configured only for AWS SES and if you don't want to track any of this and just want to send emails, you can try adding another SMTP server, but we cannot guarantee it will work.***
 ## Installation
 
 To launch this project in either your local or production environment, specific steps are required.
