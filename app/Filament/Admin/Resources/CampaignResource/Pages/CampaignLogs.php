@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 use App\Enum\CampaignLogStatusType;
 use App\Enum\CampaignStatusType;
 use App\Filament\Admin\Resources\CampaignResource;
+use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Infolists;
@@ -89,11 +90,14 @@ class CampaignLogs extends Page implements HasForms, HasTable
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         CampaignLogStatusType::BOUNCE->value => 'danger',
-                        CampaignLogStatusType::COMPLAINT->value => 'yellow',
-                        CampaignLogStatusType::SENT->value => 'blue',
-                        CampaignLogStatusType::DELIVERED->value => 'success',
-                        CampaignLogStatusType::REJECTED->value => 'danger',
-                        CampaignLogStatusType::FAILED->value => 'danger',
+                        CampaignLogStatusType::COMPLAINT->value => 'purple',
+                        CampaignLogStatusType::SENDING->value => 'blue',
+                        CampaignLogStatusType::SENT->value => 'success',
+                        CampaignLogStatusType::DELIVERED->value => 'teal',
+                        CampaignLogStatusType::REJECTED->value => 'pink',
+                        CampaignLogStatusType::FAILED->value => 'gray',
+                        CampaignLogStatusType::RENDERING_FAILURE->value => 'orange',
+                        CampaignLogStatusType::DELIVERY_DELAY->value => 'yellow',
                     })
                     ->searchable()
                     ->sortable()
@@ -136,11 +140,14 @@ class CampaignLogs extends Page implements HasForms, HasTable
                                     ->badge()
                                     ->color(fn (string $state): string => match ($state) {
                                         CampaignLogStatusType::BOUNCE->value => 'danger',
-                                        CampaignLogStatusType::COMPLAINT->value => 'yellow',
-                                        CampaignLogStatusType::SENT->value => 'blue',
-                                        CampaignLogStatusType::DELIVERED->value => 'success',
-                                        CampaignLogStatusType::REJECTED->value => 'danger',
-                                        CampaignLogStatusType::FAILED->value => 'danger',
+                                        CampaignLogStatusType::COMPLAINT->value => 'purple',
+                                        CampaignLogStatusType::SENDING->value => 'blue',
+                                        CampaignLogStatusType::SENT->value => 'success',
+                                        CampaignLogStatusType::DELIVERED->value => 'teal',
+                                        CampaignLogStatusType::REJECTED->value => 'pink',
+                                        CampaignLogStatusType::FAILED->value => 'gray',
+                                        CampaignLogStatusType::RENDERING_FAILURE->value => 'orange',
+                                        CampaignLogStatusType::DELIVERY_DELAY->value => 'yellow',
                                     }),
                                 Infolists\Components\TextEntry::make('reason_failed')
                                     ->label('Reason of Failure')
@@ -162,35 +169,35 @@ class CampaignLogs extends Page implements HasForms, HasTable
                                 Infolists\Components\TextEntry::make('queued_at')
                                     ->label('Queued')
                                     ->placeholder('No Date of Queued')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('sent_at')
                                     ->label('Sent')
                                     ->placeholder('No Date of Sent')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('delivered_at')
                                     ->label('Delivered')
                                     ->placeholder('No Date of Delivery')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('opened_at')
                                     ->label('Opened')
                                     ->placeholder('No Date of Opened')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('clicked_at')
                                     ->label('Clicked')
                                     ->placeholder('No Date of Clicked')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('bounced_at')
                                     ->label('Bounced')
                                     ->placeholder('No Date of Bounced')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('unsubscribed_at')
                                     ->label('Unsubscribed')
                                     ->placeholder('No Date of Unsubscribed')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                                 Infolists\Components\TextEntry::make('complained_at')
                                     ->label('Complained')
                                     ->placeholder('No Date of Complained')
-                                    ->date('F j, Y, g:i A'),
+                                    ->dateTime('F j, Y \a\t g:i A', Filament::getTenant()->timezone),
                             ])
                             ->columns(3),
                     ]),
