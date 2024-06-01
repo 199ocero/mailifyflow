@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Admin\Pages\Tenancy\EditTeamProfile;
 use App\Filament\Admin\Pages\Tenancy\RegisterTeam;
+use App\Filament\Avatar\AvatarsProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('')
             ->login()
+            ->defaultAvatarProvider(AvatarsProvider::class)
             ->tenant(\App\Models\Team::class, 'slug')
             ->tenantRegistration(RegisterTeam::class)
             ->tenantProfile(EditTeamProfile::class)
