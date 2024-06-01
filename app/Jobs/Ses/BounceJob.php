@@ -15,8 +15,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Spatie\WebhookClient\Models\WebhookCall;
 
-use function Symfony\Component\Clock\now;
-
 class BounceJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
