@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enum\SubscriberStatusType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -37,5 +39,10 @@ class Subscriber extends Model
     public function emailLists(): BelongsToMany
     {
         return $this->belongsToMany(EmailList::class, 'email_list_subscriber');
+    }
+
+    public function scopeSubscribed(Builder $query): Builder
+    {
+        return $query->where('status', SubscriberStatusType::SUBSCRIBED->value);
     }
 }
