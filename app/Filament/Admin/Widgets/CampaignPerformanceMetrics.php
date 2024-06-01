@@ -8,13 +8,13 @@ use App\Models\EmailList;
 use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
-class EngagementMetrics extends ChartWidget
+class CampaignPerformanceMetrics extends ChartWidget
 {
-    protected static ?string $heading = 'Engagement Metrics';
+    protected static ?string $heading = 'Campaign Performance Metrics';
 
     protected static ?string $pollingInterval = null;
 
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 1;
 
     protected static ?int $sort = 2;
 
@@ -65,7 +65,7 @@ class EngagementMetrics extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Engagement Metrics',
+                    'label' => 'Campaign Performance Metrics',
                     'data' => [$openRate, $clickedThroughRate, $bounceRate, $unsubscribeRate, $spamRate],
                     'backgroundColor' => '#EA580C',
                     'borderColor' => '#EA580C',
