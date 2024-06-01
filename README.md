@@ -98,12 +98,16 @@ MAILIFYFLOW_NODE_PATH=full-path-to-your-node
  - Create a subscription within your selected SNS topic, using `HTTPS` as the protocol. You can use `expose` or `ngrok` to expose your local environment; in production, this is not necessary.
  - Use the exposed URL in the `Endpoint` field of your SNS, appending `/webhooks/ses` at the end.
 
+> [!IMPORTANT]
+> ***Please ensure that you do not disable or cancel your `expose` or `ngrok`, as it needs to listen to all events coming from Amazon SNS. During development, it's crucial to keep it running, but in production, you can turn it off.***
+
 **Steps below create AWS access key, secret access key, and region:**
  - Create an IAM group and assign the `AmazonSESFullAccess` and `AmazonSNSFullAccess` permissions.
  - Create a new IAM user and add them to the group you created.
  - Once the user is created, obtain the access key and secret key, and ensure you use the same region where your Amazon SES is set up.
 
 Lastly, the system uses jobs, so you will need to run `php artisan queue:work` for the local environment. For production, you will need to use a tool like `supervisor` and Laravel provides [documentation](https://laravel.com/docs/11.x/queues#running-the-queue-worker) for this. Additionally, the system having scheduled commands and you need to setup your server using the provided [guide.](https://laravel.com/docs/11.x/scheduling#running-the-scheduler)
+
 ## Authors
 
 - [Jay-Are Ocero](https://github.com/199ocero)
