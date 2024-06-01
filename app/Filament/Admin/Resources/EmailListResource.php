@@ -9,9 +9,11 @@ use App\Models\EmailList;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class EmailListResource extends Resource
 {
@@ -105,7 +107,28 @@ class EmailListResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('delete_email_list')
+                        ->label('Delete Email List')
+                        ->color('danger')
+                        ->icon('heroicon-o-trash')
+                        ->requiresConfirmation()
+                        ->modalDescription('Are you sure you would like to do this? It will also delete all subscribers from this list.')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->subscribers()->each(function ($subscriber) {
+                                    $subscriber->delete();
+                                });
+
+                                $record->delete();
+                            });
+
+                            Notification::make()
+                                ->success()
+                                ->title('Email List Deleted')
+                                ->body('Email List has been deleted and all subscribers have been deleted from this list.')
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
