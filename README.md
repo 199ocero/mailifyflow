@@ -103,7 +103,7 @@ MAILIFYFLOW_NODE_PATH=full-path-to-your-node
  - Create a new IAM user and add them to the group you created.
  - Once the user is created, obtain the access key and secret key, and ensure you use the same region where your Amazon SES is set up.
 
-Lastly, the system uses jobs, so you will need to run `php artisan queue:work` for the local environment. For production, you will need to use a tool like `supervisor` and Laravel provides [documentation](https://laravel.com/docs/11.x/queues#running-the-queue-worker) for this.
+Lastly, the system uses jobs, so you will need to run `php artisan queue:work` for the local environment. For production, you will need to use a tool like `supervisor` and Laravel provides [documentation](https://laravel.com/docs/11.x/queues#running-the-queue-worker) for this. Additionally, the system having scheduled commands and you need to setup your server using the provided [guide.](https://laravel.com/docs/11.x/scheduling#running-the-scheduler)
 ## Authors
 
 - [Jay-Are Ocero](https://github.com/199ocero)
