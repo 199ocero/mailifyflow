@@ -66,9 +66,8 @@ class CampaignJob implements ShouldQueue
             'team_id' => $this->campaign->team_id,
             'campaign_id' => $this->campaign->id,
             'subscriber_id' => $this->subscriber->id,
-            'status' => CampaignLogStatusType::SENT->value,
+            'status' => CampaignLogStatusType::SENDING->value,
             'queued_at' => $this->campaign->created_at,
-            'sent_at' => now(),
         ]);
     }
 
@@ -85,7 +84,6 @@ class CampaignJob implements ShouldQueue
             'status' => CampaignLogStatusType::FAILED->value,
             'reason_failed' => $exception->getMessage(),
             'queued_at' => $this->campaign->created_at,
-            'sent_at' => now(),
         ]);
     }
 }
