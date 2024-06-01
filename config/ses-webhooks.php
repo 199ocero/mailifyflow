@@ -12,8 +12,14 @@ return [
      */
     'jobs' => [
         'bounce' => \App\Jobs\Ses\BounceJob::class,
-        // 'complaint' => \App\Jobs\SesWebhooks\ComplaintEvent::class,
-        // 'rendering_failure' => \App\Jobs\SesWebhooks\RenderingFailureEvent::class,
+        'complaint' => \App\Jobs\Ses\ComplaintJob::class,
+        'delivery' => \App\Jobs\Ses\DeliveryJob::class,
+        'send' => \App\Jobs\Ses\SendJob::class,
+        'reject' => \App\Jobs\Ses\RejectJob::class,
+        'rendering_failure' => \App\Jobs\Ses\RenderingFailureJob::class,
+        'delivery_delay' => \App\Jobs\Ses\DeliveryDelayJob::class,
+        'open' => \App\Jobs\Ses\OpenJob::class,
+        'click' => \App\Jobs\Ses\ClickJob::class,
     ],
 
     /*
