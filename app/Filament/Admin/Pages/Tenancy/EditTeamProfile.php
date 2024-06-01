@@ -48,7 +48,8 @@ class EditTeamProfile extends EditTenantProfile
                         TimezoneSelect::make('timezone')
                             ->searchable()
                             ->required()
-                            ->timezoneType('GMT'),
+                            ->timezoneType('GMT')
+                            ->helperText('The timezone will be used for all time related calculations in the application.'),
                     ]),
             ]);
     }
