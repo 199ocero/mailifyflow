@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "deb651d561b320b8378ca2515f120c0a",
+    "content-hash": "f07a61fc016a92b2172b33e8efcbfd3f",
     "packages": [
         {
             "name": "ankurk91/laravel-ses-webhooks",
