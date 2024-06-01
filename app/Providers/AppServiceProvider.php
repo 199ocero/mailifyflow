@@ -2,16 +2,16 @@
 
 namespace App\Providers;
 
-use App\Models\Template;
 use App\Models\EmailList;
 use App\Models\EmailProvider;
-use App\Observers\TemplateObserver;
+use App\Models\Template;
 use App\Observers\EmailListObserver;
+use App\Observers\EmailProviderObserver;
+use App\Observers\TemplateObserver;
 use Filament\Forms\Components\Select;
+use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use App\Observers\EmailProviderObserver;
-use Filament\Support\Facades\FilamentView;
 
 class AppServiceProvider extends ServiceProvider
 {

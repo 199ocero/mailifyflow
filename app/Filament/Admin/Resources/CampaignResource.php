@@ -2,30 +2,27 @@
 
 namespace App\Filament\Admin\Resources;
 
-use Throwable;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Get;
+use App\Enum\CampaignStatusType;
+use App\Filament\Admin\Blocks\ButtonBlock;
+use App\Filament\Admin\Blocks\QuoteBlock;
+use App\Filament\Admin\Resources\CampaignResource\Pages;
+use App\Jobs\CampaignJob;
 use App\Models\Campaign;
 use App\Models\Template;
-use Filament\Forms\Form;
-use App\Jobs\CampaignJob;
-use Illuminate\Bus\Batch;
-use Filament\Tables\Table;
 use Filament\Facades\Filament;
-use App\Enum\CampaignStatusType;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Illuminate\Support\HtmlString;
+use Filament\Support\Enums\Alignment;
+use Filament\Tables;
+use Filament\Tables\Table;
+use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Bus\Batch;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Bus;
-use Filament\Support\Enums\Alignment;
-use FilamentTiptapEditor\TiptapEditor;
-use Filament\Notifications\Notification;
-use App\Filament\Admin\Blocks\QuoteBlock;
-use App\Filament\Admin\Blocks\ButtonBlock;
-use App\Filament\Admin\Resources\CampaignResource\Pages;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 
 class CampaignResource extends Resource
 {
@@ -126,9 +123,10 @@ class CampaignResource extends Resource
                                     ->modalSubmitAction(false)
                                     ->modalCancelAction(false)
                                     ->modalWidth('6xl')
-                                    ->modalContent(function (Get $get): View | null {
+                                    ->modalContent(function (Get $get): ?View {
                                         if ($get('campaign_content') && $get('template_id')) {
                                             $template = Template::find($get('template_id'));
+
                                             return view('filament.campaign.preview', [
                                                 'templateContent' => json_decode(tiptap_converter()->asJSON($template->template_content), true)['content'],
                                                 'campaignContent' => json_decode(tiptap_converter()->asJSON($get('campaign_content')), true)['content'],
@@ -136,22 +134,22 @@ class CampaignResource extends Resource
                                         }
 
                                         return null;
-                                    })
+                                    }),
                             ])
                             ->footerActionsAlignment(Alignment::Center)
                             ->schema([
                                 TiptapEditor::make('campaign_content')
                                     ->profile('mailifyflow')
                                     ->extraInputAttributes([
-                                        'style' => 'min-height: 50rem;'
+                                        'style' => 'min-height: 50rem;',
                                     ])
                                     ->blocks([
                                         ButtonBlock::class,
                                         QuoteBlock::class,
                                     ])
-                                    ->required()
-                            ])
-                    ])
+                                    ->required(),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -210,7 +208,7 @@ class CampaignResource extends Resource
                     Tables\Actions\Action::make('start_campaign')
                         ->label('Start')
                         ->visible(function (Campaign $record) {
-                            if (!in_array($record->status, [CampaignStatusType::DRAFT->value])) {
+                            if (! in_array($record->status, [CampaignStatusType::DRAFT->value])) {
                                 return false;
                             }
 
@@ -230,7 +228,7 @@ class CampaignResource extends Resource
                     Tables\Actions\Action::make('cancel_campaign')
                         ->label('Cancel')
                         ->visible(function (Campaign $record) {
-                            if (!in_array($record->status, [CampaignStatusType::DRAFT->value])) {
+                            if (! in_array($record->status, [CampaignStatusType::DRAFT->value])) {
                                 return false;
                             }
 
@@ -266,7 +264,7 @@ class CampaignResource extends Resource
                         }),
                     Tables\Actions\DeleteAction::make()
                         ->visible(function (Campaign $record) {
-                            if (!in_array($record->status, [CampaignStatusType::DRAFT->value])) {
+                            if (! in_array($record->status, [CampaignStatusType::DRAFT->value])) {
                                 return false;
                             }
 
@@ -293,7 +291,7 @@ class CampaignResource extends Resource
                         })
                         ->url(fn (Campaign $record) => Pages\CampaignLogs::getUrl(['record' => $record->id])),
                 ])
-                    ->button()
+                    ->button(),
             ])
             ->bulkActions([])
             ->poll();
@@ -316,7 +314,7 @@ class CampaignResource extends Resource
             $campaign = Campaign::query()->with([
                 'emailList.subscribers.tags',
                 'emailProvider',
-                'tags'
+                'tags',
             ])->find($record->id);
 
             $jobs = [];
@@ -333,7 +331,7 @@ class CampaignResource extends Resource
                 // Check if there is an intersection between campaign tags and subscriber tags
                 $commonTags = array_intersect($campaignTags, $subscriberTags);
 
-                if (!empty($commonTags)) {
+                if (! empty($commonTags)) {
                     // If there are common tags, add this subscriber to the list
                     $subscribersWithCommonTags[] = $subscriber;
                 }

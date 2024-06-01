@@ -33,7 +33,7 @@ return new class extends Migration
                 CampaignStatusType::SENT->value,
                 CampaignStatusType::CANCELLED->value,
                 CampaignStatusType::FAILED->value,
-                CampaignStatusType::SENT_WITH_FAILURE->value
+                CampaignStatusType::SENT_WITH_FAILURE->value,
             ])->default(CampaignStatusType::DRAFT->value);
             $table->timestamps();
         });

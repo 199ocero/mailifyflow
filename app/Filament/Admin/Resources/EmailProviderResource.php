@@ -2,16 +2,14 @@
 
 namespace App\Filament\Admin\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Get;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
+use App\Filament\Admin\Resources\EmailProviderResource\Pages;
 use App\Models\EmailProvider;
 use Filament\Facades\Filament;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use App\Models\EmailProviderType;
-use App\Filament\Admin\Resources\EmailProviderResource\Pages;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 
 class EmailProviderResource extends Resource
@@ -71,10 +69,10 @@ class EmailProviderResource extends Resource
                                             ->revealable()
                                             ->required(),
                                     ])
-                                    ->columns(2)
+                                    ->columns(2),
                             ])
-                            ->columns(1)
-                    ])
+                            ->columns(1),
+                    ]),
             ]);
     }
 

@@ -2,16 +2,15 @@
 
 namespace App\Filament\Imports;
 
-use App\Models\Tag;
-use Filament\Forms;
+use App\Enum\SubscriberStatusType;
 use App\Models\EmailList;
 use App\Models\Subscriber;
-use Illuminate\Support\Arr;
-use Filament\Facades\Filament;
-use App\Enum\SubscriberStatusType;
-use Filament\Actions\Imports\Importer;
+use App\Models\Tag;
 use Filament\Actions\Imports\ImportColumn;
+use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Filament\Facades\Filament;
+use Filament\Forms;
 
 class SubscriberRelationImporter extends Importer
 {
@@ -61,10 +60,10 @@ class SubscriberRelationImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your subscriber import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Your subscriber import has completed and '.number_format($import->successful_rows).' '.str('row')->plural($import->successful_rows).' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
+            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to import.';
         }
 
         return $body;

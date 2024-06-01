@@ -2,12 +2,12 @@
 
 namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 
+use App\Filament\Admin\Resources\CampaignResource;
 use App\Models\Template;
-use Filament\Facades\Filament;
 use App\Services\MaizzleConverter;
+use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Admin\Resources\CampaignResource;
 
 class CreateCampaign extends CreateRecord
 {
@@ -44,7 +44,7 @@ class CreateCampaign extends CreateRecord
                 ->body($e->getMessage())
                 ->persistent()
                 ->send();
-        
+
             $this->halt();
         }
 

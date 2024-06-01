@@ -2,11 +2,10 @@
 
 namespace App\Filament\Admin\Resources\EmailListResource\Pages;
 
-use Filament\Actions;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Admin\Resources\EmailListResource;
 use Filament\Facades\Filament;
+use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class CreateEmailList extends CreateRecord
 {
@@ -40,7 +39,7 @@ class CreateEmailList extends CreateRecord
                 ->exists();
 
             // If no default record exists for the team, set this record as default
-            if (!$defaultExists) {
+            if (! $defaultExists) {
                 $data['default'] = true;
             }
         }

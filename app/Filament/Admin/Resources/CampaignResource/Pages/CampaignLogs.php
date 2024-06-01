@@ -3,25 +3,25 @@
 namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 
 use App\Enum\CampaignLogStatusType;
-use Filament\Tables;
-use Filament\Infolists;
-use Filament\Tables\Table;
 use App\Enum\CampaignStatusType;
-use Filament\Resources\Pages\Page;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Contracts\HasTable;
-use Illuminate\Contracts\Support\Htmlable;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Tables\Concerns\InteractsWithTable;
 use App\Filament\Admin\Resources\CampaignResource;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Infolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Resources\Pages\Page;
+use Filament\Tables;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CampaignLogs extends Page implements HasForms, HasTable
 {
+    use InteractsWithForms;
     use InteractsWithRecord;
     use InteractsWithTable;
-    use InteractsWithForms;
 
     protected static string $resource = CampaignResource::class;
 
@@ -31,15 +31,15 @@ class CampaignLogs extends Page implements HasForms, HasTable
 
     protected ?string $subheading = null;
 
-    public function mount(int | string $record): void
+    public function mount(int|string $record): void
     {
         $this->record = $this->resolveRecord($record);
 
-        if (!$this->record) {
+        if (! $this->record) {
             abort(404);
         }
 
-        if (!in_array($this->record->status, [
+        if (! in_array($this->record->status, [
             CampaignStatusType::FAILED->value,
             CampaignStatusType::SENT->value,
             CampaignStatusType::SENT_WITH_FAILURE->value,
@@ -48,12 +48,12 @@ class CampaignLogs extends Page implements HasForms, HasTable
         }
     }
 
-    public function getHeading(): string | Htmlable
+    public function getHeading(): string|Htmlable
     {
         return $this->getRecord()->name;
     }
 
-    public function getSubheading(): string | Htmlable | null
+    public function getSubheading(): string|Htmlable|null
     {
         return "Detailed Log of Activities for the {$this->getRecord()->name} Campaign";
     }
@@ -192,8 +192,8 @@ class CampaignLogs extends Page implements HasForms, HasTable
                                     ->placeholder('No Date of Complained')
                                     ->date('F j, Y, g:i A'),
                             ])
-                            ->columns(3)
-                    ])
+                            ->columns(3),
+                    ]),
             ])
             ->bulkActions([
                 // ...

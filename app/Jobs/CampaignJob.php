@@ -3,24 +3,24 @@
 namespace App\Jobs;
 
 use App\Enum\CampaignLogStatusType;
-use Throwable;
-use App\Models\Campaign;
+use App\Enum\CampaignStatusType;
 use App\Mail\CampaignMail;
+use App\Models\Campaign;
+use App\Models\CampaignEmail;
 use App\Models\Subscriber;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use App\Enum\CampaignStatusType;
-use App\Models\CampaignEmail;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class CampaignJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Delete the job if its models no longer exist.

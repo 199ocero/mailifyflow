@@ -9,12 +9,9 @@ use App\Models\EmailList;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmailListResource extends Resource
 {
@@ -50,7 +47,7 @@ class EmailListResource extends Resource
                                     ->label('Default')
                                     ->helperText('If enabled, this list will serve as the default list. If no default list exists, the latest list will be used instead.')
                                     ->required(),
-                            ])
+                            ]),
                     ])
                     ->collapsible()
                     ->collapsed(function (string $operation): bool {
@@ -59,7 +56,7 @@ class EmailListResource extends Resource
                         }
 
                         return false;
-                    })
+                    }),
             ]);
     }
 

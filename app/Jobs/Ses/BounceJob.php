@@ -6,15 +6,13 @@ use App\Enum\CampaignLogStatusType;
 use App\Enum\SubscriberStatusType;
 use App\Enum\UnsubscribeEventType;
 use App\Models\CampaignEmail;
-use App\Models\Subscriber;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 use Spatie\WebhookClient\Models\WebhookCall;
 
 use function Symfony\Component\Clock\now;
@@ -38,21 +36,23 @@ class BounceJob implements ShouldQueue
     {
         $message = $this->webhookCall->payload['Message'];
 
-        if (Arr::get($message, 'bounce.bounceType') !== 'Permanent') return;
+        if (Arr::get($message, 'bounce.bounceType') !== 'Permanent') {
+            return;
+        }
 
         $campaignId = null;
         $subscriberId = null;
 
-        foreach ($message["mail"]["headers"] as $header) {
-            if ($header["name"] === "Campaign-Id") {
-                $campaignId = $header["value"];
+        foreach ($message['mail']['headers'] as $header) {
+            if ($header['name'] === 'Campaign-Id') {
+                $campaignId = $header['value'];
                 break;
             }
         }
 
-        foreach ($message["mail"]["headers"] as $header) {
-            if ($header["name"] === "Subscriber-Id") {
-                $subscriberId = $header["value"];
+        foreach ($message['mail']['headers'] as $header) {
+            if ($header['name'] === 'Subscriber-Id') {
+                $subscriberId = $header['value'];
                 break;
             }
         }

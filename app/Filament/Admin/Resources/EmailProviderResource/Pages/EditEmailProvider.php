@@ -2,10 +2,8 @@
 
 namespace App\Filament\Admin\Resources\EmailProviderResource\Pages;
 
-use Filament\Resources\Pages\EditRecord;
 use App\Filament\Admin\Resources\EmailProviderResource;
-use App\Models\EmailProviderType;
-use App\Enum\EmailProviderType as EmailProviderTypeEnum;
+use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Crypt;
 
 class EditEmailProvider extends EditRecord
@@ -46,7 +44,7 @@ class EditEmailProvider extends EditRecord
                 'port' => $data['port'],
                 'encryption' => $data['encryption'],
                 'username' => $data['username'],
-                'password' => $data['password']
+                'password' => $data['password'],
             ]
         );
 

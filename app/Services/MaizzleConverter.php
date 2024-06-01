@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class MaizzleConverter
 {
     protected $maizzlePath;
+
     protected $nodePath;
 
     public function __construct()
@@ -29,12 +30,13 @@ class MaizzleConverter
     /**
      * Converts the given title, preheader, body class, and content to HTML using the Maizzle rendering script.
      *
-     * @param string $title The title of the page.
-     * @param string $preheader The preheader text.
-     * @param string $bodyClass The body class of the page.
-     * @param string $content The content to be converted.
-     * @throws ProcessFailedException If the process fails to run.
+     * @param  string  $title  The title of the page.
+     * @param  string  $preheader  The preheader text.
+     * @param  string  $bodyClass  The body class of the page.
+     * @param  string  $content  The content to be converted.
      * @return string The converted HTML content.
+     *
+     * @throws ProcessFailedException If the process fails to run.
      */
     public function convert(string $title, string $preheader, string $bodyClass, string $content)
     {
@@ -68,7 +70,7 @@ class MaizzleConverter
     /**
      * Extract HTML content from output.
      *
-     * @param string $output
+     * @param  string  $output
      * @return string
      */
     private function extractHtml($output)

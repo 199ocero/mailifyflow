@@ -3,18 +3,15 @@
 namespace App\Filament\Admin\Resources\EmailListResource\RelationManagers;
 
 use App\Enum\SubscriberStatusType;
-use App\Models\Tag;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Subscriber;
-use Filament\Tables\Table;
-use Filament\Facades\Filament;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Imports\SubscriberRelationImporter;
+use App\Models\Tag;
+use Filament\Facades\Filament;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class SubscribersRelationManager extends RelationManager
 {
@@ -112,14 +109,14 @@ class SubscribersRelationManager extends RelationManager
                     ->importer(SubscriberRelationImporter::class)
                     ->modalHeading('Import Subscribers')
                     ->options([
-                        'email_list_id' =>  $this->getOwnerRecord()->getKey(),
+                        'email_list_id' => $this->getOwnerRecord()->getKey(),
                     ]),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

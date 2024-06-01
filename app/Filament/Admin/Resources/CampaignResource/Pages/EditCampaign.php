@@ -3,12 +3,12 @@
 namespace App\Filament\Admin\Resources\CampaignResource\Pages;
 
 use App\Enum\CampaignStatusType;
+use App\Filament\Admin\Resources\CampaignResource;
 use App\Models\Template;
-use Filament\Facades\Filament;
 use App\Services\MaizzleConverter;
+use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Admin\Resources\CampaignResource;
 
 class EditCampaign extends EditRecord
 {

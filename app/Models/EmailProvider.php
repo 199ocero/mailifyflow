@@ -13,7 +13,7 @@ class EmailProvider extends Model
     protected $fillable = [
         'team_id',
         'name',
-        'config'
+        'config',
     ];
 
     public function team(): BelongsTo

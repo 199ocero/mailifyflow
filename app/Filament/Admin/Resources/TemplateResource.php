@@ -2,22 +2,21 @@
 
 namespace App\Filament\Admin\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Get;
-use App\Models\Template;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
-use Illuminate\Support\HtmlString;
-use Illuminate\Contracts\View\View;
-use Filament\Support\Enums\Alignment;
-use FilamentTiptapEditor\TiptapEditor;
-use App\Filament\Admin\Blocks\QuoteBlock;
 use App\Filament\Admin\Blocks\ButtonBlock;
 use App\Filament\Admin\Blocks\ContentBlock;
+use App\Filament\Admin\Blocks\QuoteBlock;
 use App\Filament\Admin\Resources\TemplateResource\Pages;
+use App\Models\Template;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
+use Filament\Tables;
+use Filament\Tables\Table;
+use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\HtmlString;
 
 class TemplateResource extends Resource
 {
@@ -57,7 +56,7 @@ class TemplateResource extends Resource
                                     ->modalSubmitAction(false)
                                     ->modalCancelAction(false)
                                     ->modalWidth('6xl')
-                                    ->modalContent(function (Get $get): View | null {
+                                    ->modalContent(function (Get $get): ?View {
                                         if ($get('template_content')) {
                                             return view(
                                                 'filament.template.preview',
@@ -66,23 +65,23 @@ class TemplateResource extends Resource
                                         }
 
                                         return null;
-                                    })
+                                    }),
                             ])
                             ->footerActionsAlignment(Alignment::Center)
                             ->schema([
                                 TiptapEditor::make('template_content')
                                     ->profile('mailifyflow')
                                     ->extraInputAttributes([
-                                        'style' => 'min-height: 50rem;'
+                                        'style' => 'min-height: 50rem;',
                                     ])
                                     ->blocks([
                                         ButtonBlock::class,
                                         QuoteBlock::class,
-                                        ContentBlock::class
+                                        ContentBlock::class,
                                     ])
-                                    ->required()
-                            ])
-                    ])
+                                    ->required(),
+                            ]),
+                    ]),
             ]);
     }
 

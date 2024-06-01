@@ -35,10 +35,10 @@ class ButtonBlock extends TiptapBlock
                         ->mapWithKeys(fn ($color, $name) => [
                             $name => "
                             <div class='flex items-center justify-between gap-4'>
-                                <div class='w-4 h-4 rounded-full' style='background:rgb(" . $color[500] . ")'>
+                                <div class='w-4 h-4 rounded-full' style='background:rgb(".$color[500].")'>
                             </div>
-                                <span>" . str($name)->title() . '</span>
-                            </div>'
+                                <span>".str($name)->title().'</span>
+                            </div>',
                         ])
                         ->reverse()
                 )

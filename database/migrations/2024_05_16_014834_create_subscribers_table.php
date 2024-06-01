@@ -20,13 +20,13 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->enum('status', [
                 SubscriberStatusType::SUBSCRIBED->value,
-                SubscriberStatusType::UNSUBSCRIBED->value
+                SubscriberStatusType::UNSUBSCRIBED->value,
             ])->default(SubscriberStatusType::SUBSCRIBED->value);
             $table->enum('unsubscribe_type', [
                 UnsubscribeEventType::BOUNCE->value,
                 UnsubscribeEventType::COMPLAINT->value,
                 UnsubscribeEventType::MANUAL_BY_ADMIN->value,
-                UnsubscribeEventType::MANUAL_BY_SUBSCRIBER->value
+                UnsubscribeEventType::MANUAL_BY_SUBSCRIBER->value,
             ])->nullable()->default(null);
             $table->timestamp('unsubscribe_at')->nullable()->default(null);
             $table->timestamps();

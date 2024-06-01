@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\CampaignStatus;
-use App\Models\EmailProviderType;
-use App\Models\UnsubscribeEventType;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

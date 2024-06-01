@@ -2,11 +2,10 @@
 
 namespace App\Filament\Admin\Resources\EmailListResource\Pages;
 
-use Filament\Actions;
-use Filament\Facades\Filament;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Resources\Pages\EditRecord;
 use App\Filament\Admin\Resources\EmailListResource;
+use Filament\Facades\Filament;
+use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditEmailList extends EditRecord
 {
@@ -43,7 +42,7 @@ class EditEmailList extends EditRecord
                 ->exists();
 
             // If no default record exists for the team, set this record as default
-            if (!$defaultExists) {
+            if (! $defaultExists) {
                 $data['default'] = true;
             }
         }

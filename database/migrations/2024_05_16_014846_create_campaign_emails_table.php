@@ -23,7 +23,7 @@ return new class extends Migration
                 CampaignLogStatusType::SENT->value,
                 CampaignLogStatusType::DELIVERED->value,
                 CampaignLogStatusType::REJECTED->value,
-                CampaignLogStatusType::FAILED->value
+                CampaignLogStatusType::FAILED->value,
             ]);
             $table->longText('reason_failed')->nullable();
             $table->integer('open_count')->default('0');
