@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             ->login()
             ->tenant(\App\Models\Team::class, 'slug')
             ->tenantRegistration(RegisterTeam::class)
