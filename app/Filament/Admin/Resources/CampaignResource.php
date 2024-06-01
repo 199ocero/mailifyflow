@@ -312,7 +312,9 @@ class CampaignResource extends Resource
         try {
             // Fetch the campaign with related email list subscribers and their tags
             $campaign = Campaign::query()->with([
-                'emailList.subscribers.tags',
+                'emailList.subscribers' => function ($query) {
+                    $query->subscribed()->with('tags');
+                },
                 'emailProvider',
                 'tags',
             ])->find($record->id);
