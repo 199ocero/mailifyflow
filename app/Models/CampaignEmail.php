@@ -24,6 +24,9 @@ class CampaignEmail extends Model
         'bounced_at',
         'unsubscribed_at',
         'complained_at',
+        'rejected_at',
+        'rendering_failure_at',
+        'delivery_delay_at',
         'opened_at',
         'clicked_at',
     ];
@@ -35,6 +38,9 @@ class CampaignEmail extends Model
         'bounced_at' => 'datetime',
         'unsubscribed_at' => 'datetime',
         'complained_at' => 'datetime',
+        'rejected_at' => 'datetime',
+        'rendering_failure_at' => 'datetime',
+        'delivery_delay_at' => 'datetime',
         'opened_at' => 'datetime',
         'clicked_at' => 'datetime',
     ];

@@ -20,10 +20,13 @@ return new class extends Migration
             $table->enum('status', [
                 CampaignLogStatusType::BOUNCE->value,
                 CampaignLogStatusType::COMPLAINT->value,
+                CampaignLogStatusType::SENDING->value,
                 CampaignLogStatusType::SENT->value,
                 CampaignLogStatusType::DELIVERED->value,
                 CampaignLogStatusType::REJECTED->value,
                 CampaignLogStatusType::FAILED->value,
+                CampaignLogStatusType::RENDERING_FAILURE->value,
+                CampaignLogStatusType::DELIVERY_DELAY->value,
             ]);
             $table->longText('reason_failed')->nullable();
             $table->integer('open_count')->default('0');
@@ -34,6 +37,9 @@ return new class extends Migration
             $table->timestamp('bounced_at')->nullable();
             $table->timestamp('unsubscribed_at')->nullable();
             $table->timestamp('complained_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+            $table->timestamp('rendering_failure_at')->nullable();
+            $table->timestamp('delivery_delay_at')->nullable();
             $table->timestamp('opened_at')->nullable();
             $table->timestamp('clicked_at')->nullable();
             $table->timestamps();
