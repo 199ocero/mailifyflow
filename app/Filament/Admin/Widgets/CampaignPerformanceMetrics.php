@@ -56,11 +56,23 @@ class CampaignPerformanceMetrics extends ChartWidget
             ->where('complained_at', '!=', null)
             ->count();
 
-        $bounceRate = round(($emailsBounced / $emailsDelivered) * 100, 2);
-        $openRate = round(($emailsOpened / ($emailsDelivered - $emailsBounced)) * 100, 2);
-        $clickedThroughRate = round(($emailsClicked / ($emailsDelivered - $emailsBounced)) * 100, 2);
-        $unsubscribeRate = round(($unsubscribe / $emailsDelivered) * 100, 2);
-        $spamRate = round(($emailsComplaint / $emailsDelivered) * 100, 2);
+        if ($emailsDelivered != 0) {
+            $bounceRate = round(($emailsBounced / $emailsDelivered) * 100, 2);
+            $unsubscribeRate = round(($unsubscribe / $emailsDelivered) * 100, 2);
+            $spamRate = round(($emailsComplaint / $emailsDelivered) * 100, 2);
+        } else {
+            $bounceRate = 0;
+            $unsubscribeRate = 0;
+            $spamRate = 0;
+        }
+
+        if ($emailsDelivered - $emailsBounced != 0) {
+            $openRate = round(($emailsOpened / ($emailsDelivered - $emailsBounced)) * 100, 2);
+            $clickedThroughRate = round(($emailsClicked / ($emailsDelivered - $emailsBounced)) * 100, 2);
+        } else {
+            $openRate = 0;
+            $clickedThroughRate = 0;
+        }
 
         return [
             'datasets' => [
