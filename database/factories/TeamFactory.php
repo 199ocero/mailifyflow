@@ -17,10 +17,10 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => 1,
             'name' => fake()->text(50),
             'slug' => fake()->text(50),
             'timezone' => fake()->text(50),
-
         ];
     }
 }
