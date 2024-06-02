@@ -42,6 +42,8 @@ class SubscribersRelationManager extends RelationManager
                     ->preload()
                     ->nullable()
                     ->multiple(),
+                Forms\Components\Hidden::make('team_id')
+                    ->default(Filament::getTenant()->id),
             ])
             ->columns(1);
     }
