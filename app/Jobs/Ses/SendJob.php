@@ -55,9 +55,19 @@ class SendJob implements ShouldQueue
             ->first();
 
         if ($campaignLog) {
-            $campaignLog->status = CampaignLogStatusType::SENT->value;
-            $campaignLog->sent_at = Carbon::parse($message['mail']['timestamp']);
-            $campaignLog->save();
+            if (! in_array($campaignLog->status, [
+                CampaignLogStatusType::BOUNCE->value,
+                CampaignLogStatusType::COMPLAINT->value,
+                CampaignLogStatusType::DELIVERED->value,
+                CampaignLogStatusType::REJECTED->value,
+                CampaignLogStatusType::FAILED->value,
+                CampaignLogStatusType::RENDERING_FAILURE->value,
+                CampaignLogStatusType::DELIVERY_DELAY->value,
+            ])) {
+                $campaignLog->status = CampaignLogStatusType::SENT->value;
+                $campaignLog->sent_at = Carbon::parse($message['mail']['timestamp']);
+                $campaignLog->save();
+            }
         }
     }
 }
