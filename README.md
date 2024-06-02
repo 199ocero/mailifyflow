@@ -108,6 +108,12 @@ MAILIFYFLOW_NODE_PATH=full-path-to-your-node
 
 Lastly, the system uses jobs, so you will need to run `php artisan queue:work` for the local environment. For production, you will need to use a tool like `supervisor` and Laravel provides [documentation](https://laravel.com/docs/11.x/queues#running-the-queue-worker) for this. Additionally, the system having scheduled commands and you need to setup your server using the provided [guide.](https://laravel.com/docs/11.x/scheduling#running-the-scheduler)
 
+## Testing
+
+```bash
+vendor/bin/pest
+```
+
 ## Authors
 
 - [Jay-Are Ocero](https://github.com/199ocero)
