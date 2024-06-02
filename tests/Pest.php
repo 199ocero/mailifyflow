@@ -13,8 +13,8 @@
 
 uses(
     Tests\TestCase::class,
-    // Illuminate\Foundation\Testing\RefreshDatabase::class,
-)->in('Feature');
+    Illuminate\Foundation\Testing\RefreshDatabase::class,
+)->in('Feature', 'Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +42,19 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+use App\Models\Team;
+use App\Models\User;
+use Filament\Facades\Filament;
+
+use function Pest\Laravel\{actingAs};
+
+function asUser()
 {
-    // ..
+    $user = User::factory()->create();
+    $team = Team::factory()->create();
+
+    $team->users()->attach($user);
+
+    actingAs($user);
+    Filament::setTenant($team);
 }
