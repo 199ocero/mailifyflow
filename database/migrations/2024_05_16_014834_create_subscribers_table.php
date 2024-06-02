@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
             $table->string('email');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

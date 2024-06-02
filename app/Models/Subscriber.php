@@ -6,6 +6,7 @@ use App\Enum\SubscriberStatusType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -14,6 +15,7 @@ class Subscriber extends Model
     use HasFactory;
 
     protected $fillable = [
+        'team_id',
         'email',
         'first_name',
         'last_name',
@@ -25,6 +27,11 @@ class Subscriber extends Model
     protected $casts = [
         'unsubscribe_at' => 'timestamp',
     ];
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 
     public function tags(): BelongsToMany
     {

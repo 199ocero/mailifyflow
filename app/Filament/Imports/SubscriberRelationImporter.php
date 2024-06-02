@@ -24,6 +24,8 @@ class SubscriberRelationImporter extends Importer
                 ->options(Tag::query()->where('team_id', Filament::getTenant()->id)->pluck('name', 'id'))
                 ->multiple()
                 ->searchable(),
+            Forms\Components\Hidden::make('team_id')
+                ->default(Filament::getTenant()->id),
         ];
     }
 
@@ -51,6 +53,7 @@ class SubscriberRelationImporter extends Importer
     public function resolveRecord(): ?Subscriber
     {
         return new Subscriber([
+            'team_id' => $this->options['team_id'],
             'email' => $this->data['email'],
             'first_name' => $this->data['first_name'],
             'last_name' => $this->data['last_name'],
