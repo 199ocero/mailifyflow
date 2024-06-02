@@ -4,7 +4,7 @@ namespace App\Filament\Admin\Widgets;
 
 use App\Enum\SubscriberStatusType;
 use App\Models\CampaignEmail;
-use App\Models\EmailList;
+use App\Models\Subscriber;
 use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 
@@ -43,13 +43,10 @@ class CampaignPerformanceMetrics extends ChartWidget
             ->where($commonQuery)
             ->sum('click_count');
 
-        $unsubscribe = EmailList::query()
+        $unsubscribe = Subscriber::query()
             ->where($commonQuery)
-            ->withCount(['subscribers as unsubscribed_count' => function ($query) {
-                $query->where('subscribers.status', SubscriberStatusType::UNSUBSCRIBED->value);
-            }])
-            ->get()
-            ->sum('unsubscribed_count');
+            ->where('status', SubscriberStatusType::UNSUBSCRIBED)
+            ->count();
 
         $emailsComplaint = CampaignEmail::query()
             ->where($commonQuery)

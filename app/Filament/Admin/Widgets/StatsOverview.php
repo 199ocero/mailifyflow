@@ -5,7 +5,7 @@ namespace App\Filament\Admin\Widgets;
 use App\Enum\CampaignLogStatusType;
 use App\Models\Campaign;
 use App\Models\CampaignEmail;
-use App\Models\EmailList;
+use App\Models\Subscriber;
 use Filament\Facades\Filament;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -28,12 +28,12 @@ class StatsOverview extends BaseWidget
 
         $campaignLogsDelivered = CampaignEmail::query()
             ->where($commonQuery)
-            ->where('status', CampaignLogStatusType::DELIVERED->value)
+            ->where('status', CampaignLogStatusType::DELIVERED)
             ->count();
 
         $campaignLogsDelivered7Days = CampaignEmail::query()
             ->where($commonQuery)
-            ->where('status', CampaignLogStatusType::DELIVERED->value)
+            ->where('status', CampaignLogStatusType::DELIVERED)
             ->whereBetween('delivered_at', [$sevenDaysAgo, $now])
             ->count();
 
@@ -46,19 +46,14 @@ class StatsOverview extends BaseWidget
             ->whereBetween('created_at', [$sevenDaysAgo, $now])
             ->count();
 
-        $subscribersTotal = EmailList::query()
+        $subscribersTotal = Subscriber::query()
             ->where($commonQuery)
-            ->withCount('subscribers')
-            ->get()
-            ->sum('subscribers_count');
+            ->count();
 
-        $subscribersTotal7Days = EmailList::query()
+        $subscribersTotal7Days = Subscriber::query()
             ->where($commonQuery)
-            ->withCount(['subscribers' => function ($query) use ($sevenDaysAgo, $now) {
-                $query->whereBetween('subscribers.created_at', [$sevenDaysAgo, $now]);
-            }])
-            ->get()
-            ->sum('subscribers_count');
+            ->whereBetween('created_at', [$sevenDaysAgo, $now])
+            ->count();
 
         return [
             Stat::make('Total Emails Delivered', $campaignLogsDelivered)

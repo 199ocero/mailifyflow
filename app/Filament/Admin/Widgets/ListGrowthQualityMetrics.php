@@ -3,7 +3,7 @@
 namespace App\Filament\Admin\Widgets;
 
 use App\Enum\SubscriberStatusType;
-use App\Models\EmailList;
+use App\Models\Subscriber;
 use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
@@ -36,12 +36,9 @@ class ListGrowthQualityMetrics extends ChartWidget
 
         $months = [];
 
-        // Get total subscribers for the current month
-        $totalSubscribers = EmailList::query()
+        $totalSubscribers = Subscriber::query()
             ->where($commonQuery)
-            ->withCount('subscribers')
-            ->get()
-            ->sum('subscribers_count');
+            ->count();
 
         // Loop through the last 12 months
         for ($i = 0; $i < 12; $i++) {
@@ -58,36 +55,18 @@ class ListGrowthQualityMetrics extends ChartWidget
             $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
 
             // Get new subscribers for the current month
-            $newSubscribers = EmailList::query()
+            $newSubscribers = Subscriber::query()
                 ->where($commonQuery)
-                ->withCount([
-                    'subscribers as new_subscribers' => function ($query) use (
-                        $startDate,
-                        $endDate
-                    ) {
-                        $query
-                            ->where('status', SubscriberStatusType::SUBSCRIBED->value)
-                            ->whereBetween('subscribers.created_at', [$startDate, $endDate]);
-                    },
-                ])
-                ->get()
-                ->sum('new_subscribers');
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('status', SubscriberStatusType::SUBSCRIBED)
+                ->count();
 
             // Get unsubscribed subscribers for the current month
-            $unsubscribedSubscribers = EmailList::query()
+            $unsubscribedSubscribers = Subscriber::query()
                 ->where($commonQuery)
-                ->withCount([
-                    'subscribers as unsubscribed_count' => function ($query) use (
-                        $startDate,
-                        $endDate
-                    ) {
-                        $query
-                            ->where('status', SubscriberStatusType::UNSUBSCRIBED->value)
-                            ->whereBetween('subscribers.created_at', [$startDate, $endDate]);
-                    },
-                ])
-                ->get()
-                ->sum('unsubscribed_count');
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('status', SubscriberStatusType::UNSUBSCRIBED)
+                ->count();
 
             // Calculate the list growth rate for the current month
             $listGrowthRate =
