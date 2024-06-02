@@ -17,7 +17,11 @@ class EmailListFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'team_id' => 1,
+            'name' => fake()->text(50),
+            'description' => fake()->text(100),
+            'active' => true,
+            'default' => true,
         ];
     }
 }
