@@ -16,6 +16,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CampaignLogs extends Page implements HasForms, HasTable
@@ -124,7 +125,11 @@ class CampaignLogs extends Page implements HasForms, HasTable
                         Infolists\Components\Fieldset::make('Personal Information')
                             ->schema([
                                 Infolists\Components\TextEntry::make('defaultEmail')
-                                    ->label('Email Address'),
+                                    ->label('Email Address')
+                                    ->formatStateUsing(fn (string $state): View => view(
+                                        'filament.campaign.logs.email-entry',
+                                        ['state' => $state],
+                                    )),
                                 Infolists\Components\TextEntry::make('defaultFirstName')
                                     ->label('First Name')
                                     ->placeholder('No First Name'),
