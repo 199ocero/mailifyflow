@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,9 @@ class CampaignEmail extends Model
         'team_id',
         'campaign_id',
         'subscriber_id',
+        'subscriber_email',
+        'subscriber_first_name',
+        'subscriber_last_name',
         'status',
         'reason_failed',
         'open_count',
@@ -58,5 +62,26 @@ class CampaignEmail extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function defaultEmail(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->subscriber->email ?? $this->subscriber_email,
+        );
+    }
+
+    public function defaultFirstName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->subscriber->first_name ?? $this->subscriber_first_name,
+        );
+    }
+
+    public function defaultLastName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->subscriber->last_name ?? $this->subscriber_last_name,
+        );
     }
 }

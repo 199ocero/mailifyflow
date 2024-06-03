@@ -66,19 +66,19 @@ class CampaignLogs extends Page implements HasForms, HasTable
             ->inverseRelationship('campaignEmails')
             ->deferLoading()
             ->columns([
-                Tables\Columns\TextColumn::make('subscriber.email')
+                Tables\Columns\TextColumn::make('defaultEmail')
                     ->label('Email Address')
                     ->searchable()
                     ->sortable()
                     ->wrap()
                     ->wrapHeader(),
-                Tables\Columns\TextColumn::make('subscriber.first_name')
+                Tables\Columns\TextColumn::make('defaultFirstName')
                     ->label('First Name')
                     ->placeholder('No First Name')
                     ->searchable()
                     ->sortable()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('subscriber.last_name')
+                Tables\Columns\TextColumn::make('defaultLastName')
                     ->label('Last Name')
                     ->placeholder('No Last Name')
                     ->searchable()
@@ -123,12 +123,12 @@ class CampaignLogs extends Page implements HasForms, HasTable
                     ->infolist([
                         Infolists\Components\Fieldset::make('Personal Information')
                             ->schema([
-                                Infolists\Components\TextEntry::make('subscriber.email')
+                                Infolists\Components\TextEntry::make('defaultEmail')
                                     ->label('Email Address'),
-                                Infolists\Components\TextEntry::make('subscriber.first_name')
+                                Infolists\Components\TextEntry::make('defaultFirstName')
                                     ->label('First Name')
                                     ->placeholder('No First Name'),
-                                Infolists\Components\TextEntry::make('subscriber.last_name')
+                                Infolists\Components\TextEntry::make('defaultLastName')
                                     ->label('Last Name')
                                     ->placeholder('No Last Name'),
                             ])
