@@ -53,9 +53,9 @@ Copy the `.env.example` file to `.env`:
 cp .env.example .env
 ```
 
-Copy the `vite.js.example` file to `vite.js`:
+Copy the `vite.config.js.example` file to `vite.config.js`:
 ```bash
-cp vite.js.example vite.js
+cp vite.config.js.example vite.config.js
 ```
 
 Configure your database settings in the `.env` file: 
