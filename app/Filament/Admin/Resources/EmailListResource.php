@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\HtmlString;
 
 class EmailListResource extends Resource
 {
@@ -104,6 +105,28 @@ class EmailListResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('delete_single_email_list')
+                    ->label('Delete')
+                    ->color('danger')
+                    ->icon('heroicon-o-trash')
+                    ->requiresConfirmation()
+                    ->modalIcon('heroicon-o-trash')
+                    ->modalHeading(function (EmailList $record) {
+                        return new HtmlString("Delete <span class='font-extrabold text-danger-600 dark:text-danger-400'>{$record->name}</span> Email List?");
+                    })
+                    ->action(function (EmailList $record) {
+                        $record->subscribers()->each(function ($subscriber) {
+                            $subscriber->delete();
+                        });
+
+                        $record->delete();
+
+                        Notification::make()
+                            ->success()
+                            ->title('Email List Deleted')
+                            ->body('Email List has been deleted and all subscribers have been deleted from this list.')
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
