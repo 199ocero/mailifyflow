@@ -14,9 +14,12 @@ return new class extends Migration
     {
         Schema::create('campaign_emails', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('campaign_id')->constrained('campaigns')->onDelete('cascade');
             $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
-            $table->foreignId('subscriber_id')->constrained('subscribers')->onDelete('cascade');
+            $table->foreignId('campaign_id')->constrained('campaigns')->onDelete('cascade');
+            $table->foreignId('subscriber_id')->nullable()->default(null)->constrained('subscribers')->onDelete('set null');
+            $table->string('subscriber_email');
+            $table->string('subscriber_first_name')->nullable()->default(null);
+            $table->string('subscriber_last_name')->nullable()->default(null);
             $table->enum('status', [
                 CampaignLogStatusType::BOUNCE->value,
                 CampaignLogStatusType::COMPLAINT->value,
