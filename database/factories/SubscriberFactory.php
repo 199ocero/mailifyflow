@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\SubscriberStatusType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +18,13 @@ class SubscriberFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => fake()->text(50),
-            'first_name' => fake()->text(50),
-            'last_name' => fake()->text(50),
-
+            'team_id' => 1,
+            'email' => $this->faker->unique()->safeEmail(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'status' => SubscriberStatusType::SUBSCRIBED->value,
+            'unsubscribe_type' => null,
+            'unsubscribe_at' => null,
         ];
     }
 }
